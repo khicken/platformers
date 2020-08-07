@@ -1,3 +1,5 @@
+package src;
+
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -11,8 +13,6 @@ public class Main {
     private static Game game = new Game();
 
     // secret/easter egg variables
-
-
     private static int nameChangeCount = 0; // when creating your game, how many times did you change your name?
 
     public static void validate(String[] options, String inp, String output, boolean canExit) {
@@ -45,7 +45,6 @@ public class Main {
             validate(confirmValidate, temp, tempOut, false);
             if(tempOut.equals("y") || tempOut.equals("yes")) {
                 output = input;
-                for()
                 return;
             }
             nameChangeCount++;

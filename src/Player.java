@@ -1,3 +1,5 @@
+package src;
+
 public class Player {
     private int lvl, hp;
     private String name;
