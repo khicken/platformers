@@ -5,13 +5,14 @@ import java.util.regex.Pattern;
 
 public class Main {
     public static final String VERSION = "0.0.2";
+    public static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
 
     private static final Pattern alphabetCheck = Pattern.compile("^[a-zA-Z]*$");
     private static final String[] confirmValidate = {"yes", "y", "no", "n"};
 
     private static Scanner sc = new Scanner(System.in);
     private static Game game = new Game();
-    private static Window w = new Window("Jakes Adventure v" + Main.VERSION);
+    public static Window w = new Window("Jakes Adventure v" + Main.VERSION, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
 
     // secret/easter egg variables
     private static int nameChangeCount = 0; // when creating your game, how many times did you change your name?

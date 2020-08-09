@@ -14,7 +14,7 @@ public class Game {
 
     public void initGame() {
         String input = "", rawInput = "";
-        System.out.println("Hello! Welcome to Jake's Adventure (v" + Main.VERSION + ").\nWould you like to *load* a game or create a *new* one?");
+        Main.w.print("Hello! Welcome to Jake's Adventure (v" + Main.VERSION + ").\nWould you like to *load* a game or create a *new* one?");
         String[] ary_gameInitTypes = {"load", "new", "l", "n"};
         rawInput = sc.nextLine();
         Main.validate(ary_gameInitTypes, rawInput, input, true);
