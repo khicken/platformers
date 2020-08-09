@@ -73,7 +73,8 @@ public class Window extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // idk
+        input.setText("");
+        input.requestFocusInWindow();
     }
 
     public void print(String s) {
