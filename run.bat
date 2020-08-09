@@ -1,5 +1,5 @@
 @echo on
 javac src/*.java -d build
 cd build
-java Main
+java src/Main
 pause

@@ -4,13 +4,14 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Main {
-    private static final String VERSION = "0.0.2";
+    public static final String VERSION = "0.0.2";
 
     private static final Pattern alphabetCheck = Pattern.compile("^[a-zA-Z]*$");
     private static final String[] confirmValidate = {"yes", "y", "no", "n"};
 
     private static Scanner sc = new Scanner(System.in);
     private static Game game = new Game();
+    private static Window w = new Window("Jakes Adventure v" + Main.VERSION);
 
     // secret/easter egg variables
     private static int nameChangeCount = 0; // when creating your game, how many times did you change your name?
@@ -65,17 +66,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String input = "", rawInput = "";
-        System.out.println("Hello! Welcome to Jake's Adventure (v" + VERSION + ").\nWould you like to *load* a game or create a *new* one?");
-        String[] ary_gameInitTypes = {"load", "new", "l", "n"};
-        rawInput = sc.nextLine();
-        validate(ary_gameInitTypes, rawInput, input, true);
-        if(input.equals("new") || input.equals("n")) {
-            game.createGame();
-        } else {
-            game.loadGame();
-        }
-        
-        sc.close();
+        w.displayWindow();
+        game.initGame();
     }
 }
