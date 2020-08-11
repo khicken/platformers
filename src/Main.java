@@ -29,23 +29,23 @@ public class Main {
             } else if(input.equals("exit")) System.exit(0);
         }
 
-        System.out.print("Invalid command. Possible options: ");
+        Main.w.print("Invalid command. Possible options: ");
         if(canExit) {
             for(String a: options) {
-                System.out.printf("%s, ", a);
-            } System.out.println("exit");
+                Main.w.print(a + ", ");
+            } Main.w.println("exit");
         } else {
             for(int i = 0; i < options.length-1; i++) {
-                System.out.printf("%s, ", options[i]);
-            } System.out.println(options[options.length-1]);
+                Main.w.print(options[i] + ", ");
+            } Main.w.println(options[options.length-1]);
         }
-        validate(options, sc.nextLine(), output, canExit);
+        validate(options, Main.w.getInput(), output, canExit);
     }
 
     public static void checkName(String input, String output, boolean confirm) {
         if(alphabetCheck.matcher(input).find() && input.length() >= 2 && input.length() <= 20) {
-            System.out.println("Are you sure? (y/n)");
-            String temp = sc.nextLine(), tempOut = "";
+            Main.w.print("Are you sure? (y/n)");
+            String temp = Main.w.getInput(), tempOut = "";
             validate(confirmValidate, temp, tempOut, false);
             if(tempOut.equals("y") || tempOut.equals("yes")) {
                 output = input;
@@ -53,18 +53,18 @@ public class Main {
             }
             nameChangeCount++;
             if(nameChangeCount == 8) {
-                System.out.println("Here, your name is now Ryan, even if you are a female, this game can't detect your gender. Fits you well?");
+                Main.w.print("Here, your name is now Ryan, even if you are a female, this game can't detect your gender. Fits you well?");
                 output = "Ryan";
                 return;
-            } else if(nameChangeCount == 5) System.out.println("Holy smokes, what's so hard about this? Do you want your name to be set to something?");
-            else if(nameChangeCount == 3) System.out.println("It's not that hard to pick an ingame name. . .");
-            else if(nameChangeCount == 2) System.out.println("A bit of a typo here, or a bit undecisive?");
+            } else if(nameChangeCount == 5) Main.w.print("Holy smokes, what's so hard about this? Do you want your name to be set to something?");
+            else if(nameChangeCount == 3) Main.w.print("It's not that hard to pick an ingame name. . .");
+            else if(nameChangeCount == 2) Main.w.print("A bit of a typo here, or a bit undecisive?");
             else System.out.print("That's fine, choose another name: ");
-            temp = sc.nextLine();
+            temp = Main.w.getInput();
             checkName(temp, output, true);
         }
-        System.out.println("Invalid name, please try a different one!");
-        input = sc.nextLine();
+        Main.w.println("Invalid name, please try a different one!");
+        input = Main.w.getInput();
         checkName(input, output, true);
     }
 

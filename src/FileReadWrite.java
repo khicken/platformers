@@ -13,7 +13,7 @@ public class FileReadWrite {
             
             sc.close();
         } catch(FileNotFoundException e) {
-            System.out.println("Error loading save file.");
+            Main.w.print("Error loading save file.");
         }
     }
 
@@ -27,9 +27,9 @@ public class FileReadWrite {
                 else break;
             }
 
-            System.out.println("New save file(" + f.getName() + ") successfully generated!");
+            Main.w.print("New save file(" + f.getName() + ") successfully generated!");
         } catch(IOException e) {
-            System.out.println("An error occurred.");
+            Main.w.print("An error occurred.");
             e.printStackTrace();
         }
     }
