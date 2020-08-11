@@ -26,10 +26,10 @@ public class Window extends JFrame implements ActionListener {
     private JTextField input = new JTextField();
 
     private Dimension monitorSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private int w_width, w_height, m_width = (int)this.monitorSize.getWidth(), m_height = (int)this.monitorSize.getHeight();
+    private int w_width, w_height, m_width = (int) this.monitorSize.getWidth(),
+            m_height = (int) this.monitorSize.getHeight();
 
     private String userInput = "";
-    private boolean userCache = false; // if user entered something
 
     public Window(String title, int w_width, int w_height) { // init and add window components
         super(title);
@@ -38,7 +38,7 @@ public class Window extends JFrame implements ActionListener {
 
         this.setLayout(new BorderLayout(20, 10));
         this.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, new Color(236, 236, 236)));
-        
+
         middlePanel = new JPanel(new GridLayout());
         console.setFont(new Font("Monospaced", Font.PLAIN, 15));
         console.setEditable(false);
@@ -49,7 +49,8 @@ public class Window extends JFrame implements ActionListener {
         input.addActionListener(this);
         input.setEnabled(false);
 
-        middlePanel.add(new JScrollPane(console, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
+        middlePanel.add(new JScrollPane(console, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
         inputPanel.add(input);
         this.add(middlePanel, BorderLayout.CENTER);
         this.add(inputPanel, BorderLayout.SOUTH);
@@ -57,7 +58,7 @@ public class Window extends JFrame implements ActionListener {
         ImageIcon img = new ImageIcon("./../assets/jake.png");
         this.setIconImage(img.getImage());
 
-        this.setLocation((this.m_width - this.w_width)/2, (this.m_height - this.w_height)/2);
+        this.setLocation((this.m_width - this.w_width) / 2, (this.m_height - this.w_height) / 2);
         this.pack();
         this.setSize(this.w_width, this.w_height);
         this.setResizable(true);
@@ -67,24 +68,23 @@ public class Window extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public synchronized void actionPerformed(ActionEvent e) {
         input.setEnabled(false);
         userInput = input.getText();
-        userCache = true;
         this.println(this.userInput, Color.GREEN);
         input.setText("");
-        
+        notify(); // using multithreading to 'poll' user input (sleep/wake up thread process for efficiency)
     }
 
-    public String getInput() {
+    public synchronized String getInput() {
         input.setEnabled(true);
         input.requestFocusInWindow();
-        while(true) {
-            if(userCache) {
-                userCache = false;
-                return userInput;
-            }
+        try {
+            wait();
+        } catch (InterruptedException err) {
+            err.printStackTrace();
         }
+        return userInput;
     }
 
     // print methods for console

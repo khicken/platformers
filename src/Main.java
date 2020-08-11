@@ -1,8 +1,6 @@
 package src;
 
-import java.util.Scanner;
 import java.util.regex.Pattern;
-
 import javax.swing.UIManager;
 
 public class Main {
@@ -12,7 +10,6 @@ public class Main {
     private static final Pattern alphabetCheck = Pattern.compile("^[a-zA-Z]*$");
     private static final String[] confirmValidate = {"yes", "y", "no", "n"};
 
-    private static Scanner sc = new Scanner(System.in);
     private static Game game = new Game();
     public static Window w;
 
@@ -41,7 +38,7 @@ public class Main {
         }
         validate(options, Main.w.getInput(), output, canExit);
     }
-
+    
     public static void checkName(String input, String output, boolean confirm) {
         if(alphabetCheck.matcher(input).find() && input.length() >= 2 && input.length() <= 20) {
             Main.w.print("Are you sure? (y/n)");
