@@ -3,8 +3,10 @@ package src;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import javax.swing.UIManager;
+
 public class Main {
-    public static final String VERSION = "0.0.2";
+    public static final String VERSION = "0.8.10";
     public static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
 
     private static final Pattern alphabetCheck = Pattern.compile("^[a-zA-Z]*$");
@@ -12,7 +14,7 @@ public class Main {
 
     private static Scanner sc = new Scanner(System.in);
     private static Game game = new Game();
-    public static Window w = new Window("Jakes Adventure v" + Main.VERSION, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
+    public static Window w;
 
     // secret/easter egg variables
     private static int nameChangeCount = 0; // when creating your game, how many times did you change your name?
@@ -67,7 +69,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        w.displayWindow();
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        w = new Window("Jakes Adventure v" + Main.VERSION, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
         game.initGame();
     }
 }

@@ -1,30 +1,31 @@
 package src;
 
 import java.awt.Color;
-import java.awt.GridLayout;
+import javax.swing.Box;
 import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import java.awt.Dimension;
-import java.awt.Container;
+import javax.swing.ImageIcon;
 import java.awt.Insets;
 
-import java.awt.FlowLayout;
+import java.nio.file.Path;
+
+import java.awt.GridLayout;
 import java.awt.BorderLayout;
 
 public class Window extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
+    private JPanel middlePanel, inputPanel;
     private JTextArea console = new JTextArea();
     private JTextField input = new JTextField();
-    private JButton enter = new JButton("Enter");
 
     private Dimension monitorSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int w_width, w_height, m_width = (int)this.monitorSize.getWidth(), m_height = (int)this.monitorSize.getHeight();
@@ -34,33 +35,25 @@ public class Window extends JFrame implements ActionListener {
         this.w_width = w_width;
         this.w_height = w_height;
 
-        Container mainContainer = this.getContentPane();
-        mainContainer.setLayout(new BorderLayout(20, 5));
-        this.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.GRAY));
+        this.setLayout(new BorderLayout(20, 10));
+        this.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, new Color(236, 236, 236)));
 
-        enter.addActionListener(this);
-
-        // console.setColumns(150);
-        // console.setRows(10);
+        middlePanel = new JPanel(new GridLayout());
         console.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        console.setEditable(false);    
+        console.setEditable(false);
         console.setMargin(new Insets(10, 10, 10, 10));
-        // console.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-        input.setColumns(120);
+        inputPanel = new JPanel(new GridLayout());
         input.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        input.addActionListener(this);
 
-        mainContainer.add(console);
-        
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new FlowLayout(15));
+        middlePanel.add(console);
         inputPanel.add(input);
-        inputPanel.add(enter);
-        mainContainer.add(inputPanel, BorderLayout.SOUTH);
-    }
+        this.add(middlePanel, BorderLayout.CENTER);
+        this.add(inputPanel, BorderLayout.SOUTH);
 
-    public void displayWindow() { // meant to config settings
-        this.getRootPane().setDefaultButton(enter);
+        ImageIcon img = new ImageIcon("./../assets/jake.png");
+        this.setIconImage(img.getImage());
 
         this.setLocation((this.m_width - this.w_width)/2, (this.m_height - this.w_height)/2);
         this.pack();
