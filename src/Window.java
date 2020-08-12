@@ -1,28 +1,18 @@
 package src;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.BorderFactory;
-import java.awt.Dimension;
-import javax.swing.ImageIcon;
-import java.awt.Insets;
-
-import java.awt.GridLayout;
-import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 public class Window extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
     private JPanel middlePanel, inputPanel;
-    private JTextArea console = new JTextArea();
+    private JTextPane console = new JTextPane();
     private JTextField input = new JTextField();
 
     private Dimension monitorSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -40,8 +30,6 @@ public class Window extends JFrame implements ActionListener {
         this.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, new Color(236, 236, 236)));
 
         middlePanel = new JPanel(new GridLayout());
-        console.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        console.setEditable(false);
         console.setMargin(new Insets(10, 10, 10, 10));
 
         inputPanel = new JPanel(new GridLayout());
@@ -49,10 +37,9 @@ public class Window extends JFrame implements ActionListener {
         input.addActionListener(this);
         input.setEnabled(false);
 
-        middlePanel.add(new JScrollPane(console, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
+        middlePanel.add(new JScrollPane(console, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
         inputPanel.add(input);
-        this.add(middlePanel, BorderLayout.CENTER);
+        this.getContentPane().add(middlePanel, BorderLayout.CENTER);
         this.add(inputPanel, BorderLayout.SOUTH);
 
         ImageIcon img = new ImageIcon("./../assets/jake.png");
@@ -71,7 +58,7 @@ public class Window extends JFrame implements ActionListener {
     public synchronized void actionPerformed(ActionEvent e) {
         input.setEnabled(false);
         userInput = input.getText();
-        this.println(this.userInput, Color.GREEN);
+        this.println(this.userInput, new Color(255, 0, 0));
         input.setText("");
         notify(); // using multithreading to 'poll' user input (sleep/wake up thread process for efficiency)
     }
@@ -89,26 +76,31 @@ public class Window extends JFrame implements ActionListener {
 
     // print methods for console
     public void print(String s) {
-        console.append(s);
+        this.appendColorTxtToPane(s, Color.BLACK);
     }
 
     public void print(String s, Color c) { // print line to certain color
-        Color beforeColor = console.getForeground();
-        console.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        console.setForeground(c);
-        console.append(s);
-        console.setForeground(beforeColor);
+        this.appendColorTxtToPane(s, c);
     }
 
     public void println(String s) {
-        console.append(s + "\n");
+        this.appendColorTxtToPane(s + "\n", Color.BLACK);
     }
 
     public void println(String s, Color c) { // print line to certain color
-        Color beforeColor = console.getForeground();
-        console.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        console.setForeground(c);
-        console.append(s + "\n");
-        console.setForeground(beforeColor);
+        this.appendColorTxtToPane(s + "\n", c);
+    }
+
+    private void appendColorTxtToPane(String s, Color c) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+
+        console.setCaretPosition(console.getDocument().getLength());
+        console.setCharacterAttributes(aset, false);
+        console.replaceSelection(s);
     }
 }
