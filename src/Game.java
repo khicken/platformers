@@ -28,7 +28,7 @@ public class Game {
 
     public void createGame() {
         Main.w.println("Hello, new adventurer! What will be your explorer's name?\n(Letters only; name should be of length of 2-20 characters)");
-        InputValidator.checkName(rawInput, input, true);
+        InputValidator.checkName(input, true);
         player.setName(input);
     }
 
