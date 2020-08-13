@@ -6,18 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FileReadWrite {
-    public static void readFile(String saveFile) {        
+    public static void readFile(Window w, String saveFile) {        
         try {
             File f = new File("./../saves/" + saveFile);
             Scanner sc = new Scanner(f);
             
             sc.close();
         } catch(FileNotFoundException e) {
-            Main.w.print("Error loading save file.");
+            w.print("Error loading save file.");
         }
     }
 
-    public static void createFile() {
+    public static void createFile(Window w) {
         try {
             int saveNumber = 1;
             File f;
@@ -27,9 +27,9 @@ public class FileReadWrite {
                 else break;
             }
 
-            Main.w.print("New save file(" + f.getName() + ") successfully generated!");
+            w.print("New save file(" + f.getName() + ") successfully generated!");
         } catch(IOException e) {
-            Main.w.print("An error occurred.");
+            w.print("An error occurred.");
             e.printStackTrace();
         }
     }

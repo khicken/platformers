@@ -7,8 +7,8 @@ public class Main {
     public static final String VERSION = "0.8.10";
     public static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
 
-    private static Game game = new Game();
-    public static Window w;
+    private static Window window = new Window("Jakes Adventure v" + Main.VERSION, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
+    private static Game game = new Game(window);
 
     // secret/easter egg variables
     public static HashMap<String, Integer> easterEggs = new HashMap<>();
@@ -23,7 +23,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        w = new Window("Jakes Adventure v" + Main.VERSION, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
+        initEasterEggs();
         game.initGame();
     }
 }

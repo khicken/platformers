@@ -1,6 +1,5 @@
 package src;
 
-import java.util.regex.Pattern;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -11,7 +10,7 @@ import javax.swing.text.StyledDocument;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-public class Window extends JFrame, InputValidator implements ActionListener {
+public class Window extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
     private JPanel middlePanel, inputPanel;
     private JTextPane console = new JTextPane();
@@ -22,12 +21,13 @@ public class Window extends JFrame, InputValidator implements ActionListener {
     private int m_width = (int) this.monitorSize.getWidth(), m_height = (int) this.monitorSize.getHeight();
 
     private String userInput = "";
-    private boolean validInput = false, userCanExit;
+    private boolean userCanExit;
     private String[] validOptions;
-    private String inputCheckType;
-
-    public static final String ARRAY = "checkFromArray";
-    public static final String NAME = "checkName";
+    public enum ValidateTypes {
+        ARRAY,
+        ALPHABETIC
+    }
+    private ValidateTypes inputCheckType;
 
     public Window(String title, int w_width, int w_height) { // init and add window components
         super(title);
@@ -63,8 +63,7 @@ public class Window extends JFrame, InputValidator implements ActionListener {
         this.setVisible(true);
     }
 
-    // getInput runs first, then actionperformed is waited for to notify getInput() to successfully return input
-    public synchronized String getInput(String type, String[] options, boolean canExit) {
+    public synchronized String getInput(ValidateTypes type, String[] options, boolean canExit) {
         this.inputCheckType = type;
         this.validOptions = options;
         this.userCanExit = canExit;
@@ -73,10 +72,10 @@ public class Window extends JFrame, InputValidator implements ActionListener {
         input.requestFocusInWindow();
         try {
             wait();
-        } catch (InterruptedException err) {
+        } catch(InterruptedException err) {
             err.printStackTrace();
         }
-        return userInput;
+        return this.userInput;
     }
     
     @Override
@@ -84,22 +83,24 @@ public class Window extends JFrame, InputValidator implements ActionListener {
         /*** gating input ***/
         String rawUserInput = input.getText();
         if(rawUserInput.isEmpty()) return; // if you hit enter when you didn't enter anything, nothing happens
-        if(this.inputCheckType.equals(this.ARRAY)) {
-            if(checkFromArray(rawUserInput)) return;
-        } else if(this.inputCheckType.equals(this.NAME)) {
-            if(checkName(rawUserInput)) return; 
+        if(this.inputCheckType == ValidateTypes.ARRAY) {
+            if(!InputValidator.checkFromArray(this, this.validOptions, rawUserInput, this.userCanExit)) {
+                input.setText("");
+                return;
+            }
+        } else if(this.inputCheckType == ValidateTypes.ALPHABETIC) {
+            if(!InputValidator.checkAlphabetic(this, rawUserInput)) {
+                input.setText("");
+                return;
+            }
         }
-        
 
         input.setEnabled(false);
-        userInput = rawUserInput;
-        this.println(this.userInput, new Color(255, 0, 0));
+        this.userInput = rawUserInput;
+        this.println(this.userInput, Color.RED);
         input.setText("");
         notify(); // using multithreading to 'poll' user input (sleep/wake up thread process for efficiency)
     }
-
-    /******************************************* input validator methods *******************************************/
-
 
     /******************************************* print methods for console *******************************************/
     public void print(String s) {

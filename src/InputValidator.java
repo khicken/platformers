@@ -1,61 +1,60 @@
 package src;
 
-import javax.swing.
+import java.awt.Color;
 import java.util.regex.Pattern;
 
 public class InputValidator {
     private static final Pattern alphabetCheck = Pattern.compile("^[a-zA-Z]*$");
     private static final String[] confirmValidate = {"yes", "y", "no", "n"};
 
-    public boolean checkFromArray(String[] options, String inp) {
-            // iterate thru option array to find if theres a match
-            for(String a: options) {
-                if(inp.toLowerCase().equals(a)) {
-                    this.validInput = true;
-                    break;
-                } else if(inp.toLowerCase().equals("exit") && this.userCanExit) System.exit(0);
-            }
-            
-            if(!this.validInput) { // if invalid input
-                this.print("Invalid command. Possible options: ", Color.RED);
-                if(this.userCanExit) {
-                    for(String a: options) {
-                        this.print(a + ", ", Color.RED);
-                    } this.println("exit", Color.RED);
-                } else {
-                    for(int i = 0; i < options.length-1; i++) {
-                        this.print(options[i] + ", ", Color.RED);
-                    } this.println(options[options.length-1], Color.RED);
-                }
+    /**
+     * Checks user input as string based off an array
+     * 
+     * @param w Window that the method is checking for
+     * @param options Valid entries the user can input
+     * @param inp User input as a string
+     * @param userCanExit True if user has the option to type 'exit' to exit the program
+     * @return
+     */
+    public static boolean checkFromArray(Window w, String[] options, String inp, boolean userCanExit) {
+        for(String a: options) {
+            if(inp.toLowerCase().equals(a)) {
                 return true;
-            }
+            } else if(inp.toLowerCase().equals("exit") && userCanExit) System.exit(0);
         }
-    
-        private boolean checkName(String inp) {
-            if(alphabetCheck.matcher(input).find() && input.length() >= 2 && input.length() <= 20) {
-                Main.w.println("Are you sure? (y/n)");
-                String temp = Main.w.getInput(confirmValidate, false);
-                if(temp.equals("y") || temp.equals("yes")) {
-                    return true;
-                }
-                int nameChangeCount = Main.easterEggs.get("nameChangeCount");
-                if(nameChangeCount == 8) {
-                    Main.w.print("Here, your name is now Ryan, even if you are a female, this game can't detect your gender. Fits you well?");
-                    output = "Ryan";
-                    return;
-                } else if(nameChangeCount == 5) Main.w.println("Holy smokes, what's so hard about this? Do you want your name to be set to something?");
-                else if(nameChangeCount == 3) Main.w.println("It's not that hard to pick an ingame name. . .");
-                else if(nameChangeCount == 2) Main.w.println("A bit of a typo here, or a bit undecisive?");
-                else System.out.print("That's fine, choose another name: ");
-                // temp = Main.w.getInput();
-                checkName(temp, output, true);
-            }
-            Main.w.println("Invalid name, please try a different one!");
-            // input = Main.w.getInput();
-            checkName(input, output, true);
+        
+        w.print("Invalid command. Possible options: ", Color.RED);
+        if(userCanExit) {
+            for(String a: options) {
+                w.print(a + ", ", Color.RED);
+            } w.println("exit", Color.RED);
+        } else {
+            for(int i = 0; i < options.length-1; i++) {
+                w.print(options[i] + ", ", Color.RED);
+            } w.println(options[options.length-1], Color.RED);
         }
+        return false;
     }
-    public static boolean checkName(String input, String output, boolean confirm) {
+    
+    /**
+     * Checks user input as a string when setting their name (custom), returns false if name is invalid
+     * 
+     * @param w Window that the method is checking for
+     * @param inp User input as a string
+     * @return True if name is valid (alphabetic), false if not
+     */
+    public static boolean checkAlphabetic(Window w, String inp) {
+        if(alphabetCheck.matcher(inp).find() && inp.length() >= 2 && inp.length() <= 20) return true;
+        w.println("Invalid response, try again!", Color.RED);
+        return false;
+    }
 
+    /**
+     * Asks confirmation from the user. If user says no/declines, returns false. If yes, returns true
+     */
+    public static boolean confirm(Window w) {
+        w.println("Are you sure? (y/n)");
+        String temp = w.getInput(Window.ValidateTypes.ARRAY, confirmValidate, false);
+        return temp.equals("y") || temp.equals("yes");
     }
 }
