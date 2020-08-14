@@ -7,6 +7,8 @@ public class InputValidator {
     private static final Pattern alphabetCheck = Pattern.compile("^[a-zA-Z]*$");
     private static final String[] confirmValidate = {"yes", "y", "no", "n"};
 
+    private InputValidator() {}
+
     /**
      * Checks user input as string based off an array
      * 
@@ -18,9 +20,9 @@ public class InputValidator {
      */
     public static boolean checkFromArray(Window w, String[] options, String inp, boolean userCanExit) {
         for(String a: options) {
-            if(inp.toLowerCase().equals(a)) {
+            if(inp.equalsIgnoreCase(a)) {
                 return true;
-            } else if(inp.toLowerCase().equals("exit") && userCanExit) System.exit(0);
+            } else if(inp.equalsIgnoreCase("exit") && userCanExit) System.exit(0);
         }
         
         w.print("Invalid command. Possible options: ", Color.RED);

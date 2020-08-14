@@ -8,20 +8,20 @@ public class Game {
     private String input = "";
     private Window w;
 
-    public Game(Window wind) {
+    Game(Window wind) {
         w = wind;
     }
 
     public void gameLoop() {
         while(true) {
-
+            break;
         }
     }
 
     public void initGame() {
         w.println("Hello! Welcome to Jake's Adventure (v" + Main.VERSION + ").\nWould you like to *load* a game or create a *new* one?");
-        String[] ary_gameInitTypes = {"load", "new", "l", "n"};
-        input = w.getInput(Window.ValidateTypes.ARRAY, ary_gameInitTypes, true);
+        String[] gameInitTypes = {"load", "new", "l", "n"};
+        input = w.getInput(Window.ValidateTypes.ARRAY, gameInitTypes, true);
         if(input.equals("new") || input.equals("n")) {
             createGame();
         } else {
@@ -49,7 +49,8 @@ public class Game {
         Main.easterEggs.put("nameChangeCount", nameChangeCount);
         player.setName(input);
         w.print("Well greetings, " + player.getName() + "!");
-        // i need to implement the file of names easter eggs now
+        // i need to implement the file of names easter eggs now (append to the print statement)
+        this.gameLoop();
     }
 
     public void loadGame() {
