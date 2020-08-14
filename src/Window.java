@@ -3,8 +3,8 @@ package src;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.StyleConstants;
@@ -74,6 +74,9 @@ public class Window extends JFrame implements ActionListener {
             wait();
         } catch(InterruptedException err) {
             err.printStackTrace();
+            Thread.currentThread().interrupt();
+        } catch(IllegalMonitorStateException er) {
+            er.printStackTrace();
         }
         return this.userInput;
     }

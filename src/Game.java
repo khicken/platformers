@@ -7,6 +7,7 @@ public class Game {
     private Scanner sc = new Scanner(System.in);
     private String input = "";
     private Window w;
+    private String[] defaultGameOptions = {"explore", "options", "save"};
 
     Game(Window wind) {
         w = wind;
@@ -14,7 +15,12 @@ public class Game {
 
     public void gameLoop() {
         while(true) {
-            break;
+            w.println("What would you like to do?");
+            input = w.getInput(Window.ValidateTypes.ARRAY, defaultGameOptions, false);
+
+            if(input.equalsIgnoreCase("exit")) {
+                break;
+            }
         }
     }
 
@@ -50,7 +56,7 @@ public class Game {
         player.setName(input);
         w.print("Well greetings, " + player.getName() + "!");
         // i need to implement the file of names easter eggs now (append to the print statement)
-        this.gameLoop();
+        gameLoop();
     }
 
     public void loadGame() {
