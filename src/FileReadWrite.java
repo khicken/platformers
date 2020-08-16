@@ -59,8 +59,9 @@ public class FileReadWrite {
         try {
             FileWriter fw = new FileWriter(new File("./../saves/save-" + saveID + ".jadv"));
 
-            for(int i = savefileValueNames.length)
-            fw.write("name: ");
+            for(int i = 0; i < savefileValueNames.length; i++) {
+                fw.write(savefileValueNames[i] + ": " + saveFileValues[i]);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
