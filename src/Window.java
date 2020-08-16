@@ -46,7 +46,9 @@ public class Window extends JFrame implements ActionListener {
         input.addActionListener(this);
         input.setEnabled(false);
 
-        middlePanel.add(new JScrollPane(console, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
+        JScrollPane scrollPane = new JScrollPane(console, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); 
+        new SmartScroller(scrollPane);
+        middlePanel.add(scrollPane);
         inputPanel.add(input);
         this.getContentPane().add(middlePanel, BorderLayout.CENTER);
         this.add(inputPanel, BorderLayout.SOUTH);
