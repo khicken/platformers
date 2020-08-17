@@ -13,14 +13,10 @@ public class Game {
         w = wind;
     }
 
-    public void gameLoop() {
-        while(true) {
+    private void gameLoop() { // main loop that is the game
+        while(Main.checkGameState(Main.GAME_STATES.INGAME)) {
             w.println("What would you like to do?");
-            input = w.getInput(Window.ValidateTypes.ARRAY, defaultGameOptions, false);
-
-            if(input.equalsIgnoreCase("exit")) {
-                break;
-            }
+            input = w.getInput(Window.ValidateTypes.ARRAY, defaultGameOptions, true);
         }
     }
 
@@ -37,7 +33,8 @@ public class Game {
         sc.close();
     }
 
-    public void createGame() {
+    private void createGame() {
+        Main.setGameState(Main.GAME_STATES.CREATE_GAME);
         w.println("Hello sentinel! What will be your explorer's name?\n(Letters only; name should be of length of 2-20 characters)");
         int nameChangeCount = -1; // set counter to -1 that way no message appears first time name is entered
         do {
@@ -56,10 +53,27 @@ public class Game {
         player.setName(input);
         w.print("Well greetings, " + player.getName() + "!");
         // i need to implement the file of names easter eggs now (append to the print statement)
+        w.println("");
+        FileReadWrite.createFile(w);
+        Main.setGameState(Main.GAME_STATES.INGAME);
         gameLoop();
     }
 
-    public void loadGame() {
+    private void loadGame() {
+        Main.setGameState(Main.GAME_STATES.LOAD_GAME);
         w.print("Welcome back " + player.getName());
+        Main.setGameState(Main.GAME_STATES.INGAME);
+        gameLoop();
+    }
+
+    public void exitGame() {
+        if(!InputValidator.confirm(w)) return; // first check if user really wants to exit 
+        w.println("Exiting game. . .");
+        if(Main.checkGameState(Main.GAME_STATES.INGAME)) {
+            FileReadWrite.createLog(w);
+            FileReadWrite.saveFile(w, Main.GAME_ID, false);
+        }
+
+        System.exit(0);
     }
 }

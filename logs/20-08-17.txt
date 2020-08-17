@@ -1,0 +1,16 @@
+Hello! Welcome to Jake's Adventure (v0.2.2).
+Would you like to *load* a game or create a *new* one?
+new
+Hello sentinel! What will be your explorer's name?
+(Letters only; name should be of length of 2-20 characters)
+ok
+Are you sure? (y/n)
+y
+Well greetings, ok!
+New save file(save-5.jadv) successfully generated!
+What would you like to do?
+exit
+Are you sure? (y/n)
+y
+Exiting game. . .
+Creating log. . .

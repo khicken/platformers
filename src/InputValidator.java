@@ -15,14 +15,14 @@ public class InputValidator {
      * @param w Window that the method is checking for
      * @param options Valid entries the user can input
      * @param inp User input as a string
-     * @param userCanExit True if user has the option to type 'exit' to exit the program
+     * @param userCanExit True if user has the option to type 'exit' to exit the program, CANNOT BE USED INGAME
      * @return
      */
     public static boolean checkFromArray(Window w, String[] options, String inp, boolean userCanExit) {
         for(String a: options) {
             if(inp.equalsIgnoreCase(a)) {
                 return true;
-            } else if(inp.equalsIgnoreCase("exit") && userCanExit) System.exit(0);
+            } else if(inp.equalsIgnoreCase("exit") && userCanExit && !Main.checkGameState(Main.GAME_STATES.INGAME)) System.exit(0); // this cannot be used when ingame
         }
         
         w.print("Invalid command. Possible options: ", Color.RED);

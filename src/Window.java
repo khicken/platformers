@@ -61,10 +61,16 @@ public class Window extends JFrame implements ActionListener {
         this.setSize(this.w_width, this.w_height);
         this.setResizable(true);
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                Main.game.exitGame();
+            }
+        });
         this.setVisible(true);
     }
 
+    /******************************************* input fetcher methods *******************************************/
     public synchronized String getInput(ValidateTypes type, String[] options, boolean canExit) {
         this.inputCheckType = type;
         this.validOptions = options;
@@ -112,7 +118,7 @@ public class Window extends JFrame implements ActionListener {
         this.appendColorTxtToPane(s, Color.BLACK);
     }
 
-    public void print(String s, Color c) { // print line to certain color
+    public void print(String s, Color c) { // print to certain color
         this.appendColorTxtToPane(s, c);
     }
 
@@ -138,5 +144,9 @@ public class Window extends JFrame implements ActionListener {
         } catch(BadLocationException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getConsoleText() {
+        return console.getText();
     }
 }

@@ -7,6 +7,7 @@ public class Player {
     private double totalXP, lvlXP, lvlMaxXP, previousLvlsXP;
     private String name;
     private String environment;
+    private boolean alive = true;
 
     Player() { // only name needs to be passed for default constructor, used for new player
         this.lvl = 1;
@@ -37,7 +38,8 @@ public class Player {
         // this.lvlXP = 0;
     }
 
-    public void death() {
+    public void death(Window w) {
+        w.println("ah");
         // k, might delete later
     }
 
@@ -62,6 +64,18 @@ public class Player {
         return this.environment;
     }
 
+    public boolean getAlive() {
+        return this.alive;
+    }
+
+    public int getDeaths() {
+        return this.deaths;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -78,5 +92,9 @@ public class Player {
 
     public void setEnvironment(String environment) {
         this.environment = environment;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
     }
 }
