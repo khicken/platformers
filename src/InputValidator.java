@@ -18,11 +18,12 @@ public class InputValidator {
      * @param userCanExit True if user has the option to type 'exit' to exit the program, CANNOT BE USED INGAME
      * @return
      */
-    public static boolean checkFromArray(Window w, String[] options, String inp, boolean userCanExit) {
+    public static boolean checkFromArray(Window w, String[] options, String inp) {
+        boolean userCanExit = !Main.checkGameState(Main.GAME_STATES.INGAME);
         for(String a: options) {
             if(inp.equalsIgnoreCase(a)) {
                 return true;
-            } else if(inp.equalsIgnoreCase("exit") && userCanExit && !Main.checkGameState(Main.GAME_STATES.INGAME)) System.exit(0); // this cannot be used when ingame
+            } else if(inp.equalsIgnoreCase("exit") && userCanExit) System.exit(0); // this cannot be used when ingame (uses custom close command that cannot be called here)
         }
         
         w.print("Invalid command. Possible options: ", Color.RED);

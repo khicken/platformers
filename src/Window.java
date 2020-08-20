@@ -21,7 +21,6 @@ public class Window extends JFrame implements ActionListener {
     private int m_width = (int) this.monitorSize.getWidth(), m_height = (int) this.monitorSize.getHeight();
 
     private String userInput = "";
-    private boolean userCanExit;
     private String[] validOptions;
     public enum ValidateTypes {
         ARRAY,
@@ -74,7 +73,6 @@ public class Window extends JFrame implements ActionListener {
     public synchronized String getInput(ValidateTypes type, String[] options, boolean canExit) {
         this.inputCheckType = type;
         this.validOptions = options;
-        this.userCanExit = canExit;
 
         input.setEnabled(true);
         input.requestFocusInWindow();
@@ -95,7 +93,7 @@ public class Window extends JFrame implements ActionListener {
         String rawUserInput = input.getText();
         if(rawUserInput.isEmpty()) return; // if you hit enter when you didn't enter anything, nothing happens
         if(this.inputCheckType == ValidateTypes.ARRAY) {
-            if(!InputValidator.checkFromArray(this, this.validOptions, rawUserInput, this.userCanExit)) {
+            if(!InputValidator.checkFromArray(this, this.validOptions, rawUserInput)) {
                 input.setText("");
                 return;
             }
