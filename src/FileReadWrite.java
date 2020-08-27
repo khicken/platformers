@@ -60,14 +60,15 @@ public class FileReadWrite {
     public static void saveFile(Window w, int saveID, boolean firstTime) { // this overwrites the entire file lol
         w.println("Saving. . .");
         try {
-            FileWriter fw = new FileWriter(new File(SAVEFILEDIR + saveID + ".jadv"));
+            FileWriter fw = new FileWriter(new File(SAVEFILEDIR + saveID + ".jadv"), false);
 
             for(int i = 0; i < savefileValueNames.length; i++) {
                 fw.write(savefileValueNames[i] + ": " + saveFileValues[i]);
             }
 
+            w.println("File successfully saved!");
             fw.close();
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }
@@ -78,7 +79,7 @@ public class FileReadWrite {
             FileWriter fw = new FileWriter(new File(LOGFILEDIR + Main.CURRENT_DATE_ON_OPEN + ".txt"));
             fw.write(w.getConsoleText());
             fw.close();
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }
