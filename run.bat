@@ -1,5 +1,7 @@
-@echo on
-javac src/*.java -d build
-cd build
-java src/Main
+@echo off
+echo Compiling. . .
+javac src/*.java -d build/
+echo Running. . .
+cd build/
+java Main
 pause

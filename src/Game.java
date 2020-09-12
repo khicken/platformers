@@ -1,79 +1,50 @@
-package src;
+import processing.core.PApplet;
 
-import java.util.Scanner;
+import java.util.Arrays;
 
-public class Game {
-    private Player player = new Player();
-    private Scanner sc = new Scanner(System.in);
-    private String input = "";
-    private Window w;
-    private String[] defaultGameOptions = {"explore", "options", "save"};
+public class Game extends PApplet {
+    public static boolean clicked = false;
+    public static boolean[] keys = new boolean[128];
 
-    Game(Window wind) {
-        w = wind;
+	public Game() {
+
     }
+    
+	public void setup() {
+        surface.setTitle("Jake's Adventure");
+        surface.setFrameRate(60);
 
-    private void gameLoop() { // main loop that is the game
-        while(Main.checkGameState(Main.GAME_STATES.INGAME)) {
-            w.println("What would you like to do?");
-            input = w.getInput(Window.ValidateTypes.ARRAY, defaultGameOptions, true);
-        }
+        Arrays.fill(keys, false); // init every element in keys array to not pressed
     }
-
-    public void initGame() {
-        w.println("Hello! Welcome to Jake's Adventure (v" + Main.VERSION + ").\nWould you like to *load* a game or create a *new* one?");
-        String[] gameInitTypes = {"load", "new", "l", "n"};
-        input = w.getInput(Window.ValidateTypes.ARRAY, gameInitTypes, true);
-        if(input.equals("new") || input.equals("n")) {
-            createGame();
-        } else {
-            loadGame();
-        }
+    
+	public void draw() { 
+        background(255);   // Clear the screen with a white background
         
-        sc.close();
+        textAlign(LEFT);
+        fill(0);
+        
+        
     }
 
-    private void createGame() {
-        Main.setGameState(Main.GAME_STATES.CREATE_GAME);
-        w.println("Hello sentinel! What will be your explorer's name?\n(Letters only; name should be of length of 2-20 characters)");
-        int nameChangeCount = -1; // set counter to -1 that way no message appears first time name is entered
-        do {
-            if(nameChangeCount == 5) {
-                w.println("Here, your name is now Finn, even if you are a female, this game can't detect your gender. Fits you well?");
-                input = "Finn";
-                break;
-            } else if(nameChangeCount == 4) w.println("Holy smokes, what's so hard about this? Is it that you want your name to be set to something?");
-            else if(nameChangeCount == 3) w.println("It's not that hard to pick an ingame name. . .");
-            else if(nameChangeCount == 2) w.println("A bit of a typo here, or a bit undecisive?");
-            else if(nameChangeCount >= 0) w.println("That's fine, choose another name!"); // ensures message not shown first time (counter -1)
-            input = w.getInput(Window.ValidateTypes.ALPHABETIC, null, false);
-            nameChangeCount++;
-        } while(!InputValidator.confirm(w));
-        Main.easterEggs.put("nameChangeCount", nameChangeCount);
-        player.setName(input);
-        w.print("Well greetings, " + player.getName() + "!");
-        // i need to implement the file of names easter eggs now (append to the print statement)
-        w.println("");
-        FileReadWrite.createFile(w);
-        Main.setGameState(Main.GAME_STATES.INGAME);
-        gameLoop();
+    // event handling
+    
+	@Override
+	public void mousePressed() {
+		if(mouseButton == LEFT) clicked = true;
     }
 
-    private void loadGame() {
-        Main.setGameState(Main.GAME_STATES.LOAD_GAME);
-        w.print("Welcome back " + player.getName());
-        Main.setGameState(Main.GAME_STATES.INGAME);
-        gameLoop();
+    @Override
+    public void mouseReleased() {
+        if(mouseButton == LEFT) clicked = false;
     }
 
-    public void exitGame() {
-        if(!InputValidator.confirm(w)) return; // first check if user really wants to exit 
-        w.println("Exiting game. . .");
-        if(Main.checkGameState(Main.GAME_STATES.INGAME)) {
-            FileReadWrite.createLog(w);
-            FileReadWrite.saveFile(w, Main.GAME_ID, false);
-        }
-
-        System.exit(0);
+    @Override
+    public void keyPressed() {
+        if(keyCode <= 128) keys[keyCode] = true;
+    }
+    
+    @Override
+    public void keyReleased() {
+        if(keyCode <= 128) keys[keyCode] = false;
     }
 }
