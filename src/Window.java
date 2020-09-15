@@ -2,13 +2,13 @@ import processing.core.PApplet;
 
 import java.util.Arrays;
 
-public class Game extends PApplet {
+public class Window extends PApplet {
     private static boolean mouseIsPressed, mouseIsReleased;
     private static boolean[] keys;
 
     private static String testText = "";
 
-	public Game() {
+	public Window() {
         mouseIsPressed = false;
         mouseIsReleased = false;
         keys = new boolean[128];
@@ -22,16 +22,18 @@ public class Game extends PApplet {
     }
     Button btn = new Button(this, 10, 10, 100, 100, "sup");
 	public void draw() { 
-        if(frameCount == 1) frame.setLocation(10, 10);
+        if(frameCount == 0) frame.setLocation(10, 10);
         background(255);   // Clear the screen with a white background
         
         textAlign(LEFT);
         fill(0);
         
         
-        btn.draw();
+        btn.draw(mouseIsPressed);
 
-        if(btn.clicked(clicked)) btn.setText("yes");
+        if(btn.released(mouseIsReleased)) btn.setText("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+        else if(btn.pressing(mouseIsPressed)) btn.setText("pressingggg");
+        else btn.setText("reee");
 
         fill(0);
         textAlign(RIGHT);
@@ -40,6 +42,7 @@ public class Game extends PApplet {
         pollEvents();
     }
 
+    /******************* MOUSE AND KEY EVENT HANDLERS ********************/
     private void pollEvents() {
         mouseIsReleased = false;
     }
@@ -56,6 +59,7 @@ public class Game extends PApplet {
     public void mouseReleased() {
         if(mouseButton == LEFT){
             mouseIsReleased = true;
+            mouseIsPressed = false;
             testText = "Released";
         }
     }

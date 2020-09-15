@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 public class Main {
     public static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
 	public static void main(String args[]) {
-		Game g = new Game();
+		Window g = new Window();
 		PApplet.runSketch(new String[]{""}, g);
 		PSurfaceAWT surf = (PSurfaceAWT)g.getSurface();
 		PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
