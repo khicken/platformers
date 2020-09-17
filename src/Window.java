@@ -3,49 +3,58 @@ import processing.core.PApplet;
 import java.util.Arrays;
 
 public class Window extends PApplet {
-    private static boolean mouseIsPressed, mouseIsReleased;
-    private static boolean[] keys;
+    private boolean mouseIsPressed, mouseIsReleased;
+    private boolean[] keys;
 
-    private static String testText = "";
+    private String testText = "";
+    private String scene;
+    private SceneManager sm;
 
-	public Window() {
+	public Window() { // init variables
         mouseIsPressed = false;
         mouseIsReleased = false;
         keys = new boolean[128];
+
+        scene = "title";
+        sm = new SceneManager(this);
     }
     
-	public void setup() {
+	public void setup() { // init window variables and papplet inits
         surface.setTitle("Jake's Adventure");
         surface.setFrameRate(60);
 
         Arrays.fill(keys, false); // init every element in keys array to not pressed
+
+        sm.initTitleScreen();
     }
-    Button btn = new Button(this, 10, 10, 100, 100, "sup");
-	public void draw() { 
-        if(frameCount == 0) frame.setLocation(10, 10);
-        background(255);   // Clear the screen with a white background
-        
-        textAlign(LEFT);
-        fill(0);
-        
-        
-        btn.draw(mouseIsPressed);
 
-        if(btn.released(mouseIsReleased)) btn.setText("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-        else if(btn.pressing(mouseIsPressed)) btn.setText("pressingggg");
-        else btn.setText("reee");
+	public void draw() {
+        beginRender();
 
-        fill(0);
-        textAlign(RIGHT);
-        text(testText, 100, 100);
+        switch(scene) {
+            case "title":
+                sm.drawTitleScreen();
+                break;
+        }
 
+        endRender();
         pollEvents();
     }
 
-    /******************* MOUSE AND KEY EVENT HANDLERS ********************/
+    /******************* RENDERING FUNCTIONS ********************/
+    private void beginRender() {
+        background(255); // flush background
+    }
+
+    private void endRender() {
+        
+    }
+
     private void pollEvents() {
         mouseIsReleased = false;
     }
+
+    /******************* INPUT HANDLERS ********************/
 
 	@Override
 	public void mousePressed() {
@@ -72,5 +81,15 @@ public class Window extends PApplet {
     @Override
     public void keyReleased() {
         if(keyCode <= 128) keys[keyCode] = false;
+    }
+
+
+    /******************* GETTERS AND SETTERS ********************/
+    public boolean isMousePressed() {
+        return mouseIsPressed;
+    }
+
+    public boolean isMouseReleased() {
+        return mouseIsReleased;
     }
 }
