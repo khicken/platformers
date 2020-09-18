@@ -56,18 +56,19 @@ public class ArrayScroller {
         a.textAlign(PConstants.CENTER, PConstants.BASELINE);
         a.textFont(a.createFont("Trebuchet MS", 30));
         arrayElement = arr[arrayIndex];
-        a.text(arrayElement, x, y + 5);
+        a.text(arrayElement, x, y + triangleHeight/2);
     }
 
     public String getElement() {
+        arrayElement = arr[arrayIndex];
         return arrayElement;
     }
 
     private boolean isHoveringLeftSide() {
-        return a.mouseX > x && a.mouseX < x + 30 && a.mouseY > y - 15 && a.mouseY < y + 15;
+        return a.mouseX > x - w/2 && a.mouseX < x - w/2 + triangleWidth && a.mouseY > y - triangleHeight/2 && a.mouseY < y + triangleHeight/2;
     }
 
     private boolean isHoveringRightSide() {
-        return a.mouseX > x + w - 30 && a.mouseX < x + w && a.mouseY > y - 15 && a.mouseY < y + 15;
+        return a.mouseX < x + w/2 && a.mouseX > x + w/2 - triangleWidth && a.mouseY > y - triangleHeight/2 && a.mouseY < y + triangleHeight/2;
     }
 }

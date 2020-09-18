@@ -6,6 +6,8 @@ import java.awt.Toolkit;
 
 public class Window extends PApplet {
     private static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
+    private Dimension screenSize;
+
     private boolean mouseIsPressed, mouseIsReleased;
     private boolean[] keys;
 
@@ -22,18 +24,18 @@ public class Window extends PApplet {
     }
     
     public void setup() { // init window variables and papplet inits
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         surface.setTitle("Jake's Adventure");
         surface.setFrameRate(60);
         surface.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        surface.setLocation(((int)screenSize.getWidth()-WINDOW_WIDTH)/2, ((int)screenSize.getHeight()-WINDOW_HEIGHT)/2);
+        centerWindow();
 
         Arrays.fill(keys, false); // init every element in keys array to not pressed
 
         surface.setVisible(true);
         sm.initTitleScreen();
         sm.initSettings();
+        sm.initGame();
     }
 
 	public void draw() {
@@ -45,6 +47,9 @@ public class Window extends PApplet {
             break;
             case "settings":
                 sm.drawSettings();
+            break;
+            case "game":
+                sm.drawGame();
             break;
         }
 
@@ -85,12 +90,12 @@ public class Window extends PApplet {
 
     @Override
     public void keyPressed() {
-        if(keyCode <= 128) keys[keyCode] = true;
+        if(keyCode <= keys.length-1) keys[keyCode] = true;
     }
     
     @Override
     public void keyReleased() {
-        if(keyCode <= 128) keys[keyCode] = false;
+        if(keyCode <= keys.length-1) keys[keyCode] = false;
     }
 
 
@@ -119,5 +124,13 @@ public class Window extends PApplet {
         WINDOW_WIDTH = width;
         WINDOW_HEIGHT = height;
         surface.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+
+    public void centerWindow() {
+        surface.setLocation(((int)screenSize.getWidth()-WINDOW_WIDTH)/2, ((int)screenSize.getHeight()-WINDOW_HEIGHT)/2);
+    }
+
+    public boolean isKeyPressed(int key) {
+        return keys[key];
     }
 }

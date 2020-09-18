@@ -5,4 +5,9 @@ public class Main {
 		Window g = new Window();
         PApplet.runSketch(new String[]{""}, g);
     }
+
+    public static int booleanToInt(boolean b) {
+        if(b) return 1;
+        return 0;
+    }
 }
