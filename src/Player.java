@@ -1,6 +1,5 @@
 import processing.core.PConstants;
 import java.lang.Math;
-import java.lang.constant.Constable;
 
 public class Player {
     private Window a;
@@ -12,6 +11,7 @@ public class Player {
     private float size;
 
     private double weaponAngle;
+    private Weapon weapon;
 
     public Player(Window a, float x, float y, float size) {
         this.a = a;
@@ -24,6 +24,8 @@ public class Player {
         this.acceleration = 1;
         this.speedMultiplier = 1;
         this.maxSpeed = 7;
+
+        this.weapon = new Weapon(a, "ak47.png", 0, 0, 64, 64);
     }
 
     public void draw() {
@@ -39,8 +41,8 @@ public class Player {
         a.rectMode(PConstants.CENTER);
         a.translate(x + size/2, y + size/2);
         a.rotate((float)weaponAngle);
+        weapon.draw();
         a.rect(0, 0, 5, 45);
-        
         a.popMatrix();
 
         // reset to defaults
@@ -50,7 +52,15 @@ public class Player {
         move(); // fetch input to move player
     }
 
+    private void update() {
+        x += xv;
+        y += yv;
+
+        weaponAngle = (Math.atan2(a.mouseX - x, y- a.mouseY) + PConstants.PI);
+    }
+
     private void move() {
+        // wasd movement
         xDir = Main.booleanToInt(a.isKeyPressed(PConstants.RIGHT) || a.isKeyPressed(68)) - Main.booleanToInt(a.isKeyPressed(PConstants.LEFT) || a.isKeyPressed(65));
         yDir = Main.booleanToInt(a.isKeyPressed(PConstants.DOWN) || a.isKeyPressed(83)) - Main.booleanToInt(a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87));
         if(xDir == 0) xv *= 0.8;
@@ -59,16 +69,22 @@ public class Player {
         xv += xDir * acceleration * speedMultiplier;
         yv += yDir * acceleration * speedMultiplier;
         
-        xv = constrain(xv, -maxSpeed, maxSpeed);
-        yv = constrain(yv, -maxSpeed, maxSpeed);
-        a.text(xv, 100, 100);
+        if(xDir != 0 && yDir != 0) {
+            xv = constrain(xv, (float)(-maxSpeed*0.707106781), (float)(0.707106781*maxSpeed));
+            yv = constrain(yv, (float)(-maxSpeed*0.707106781), (float)(0.707106781*maxSpeed));
+        } else {
+            xv = constrain(xv, -maxSpeed, maxSpeed);
+            yv = constrain(yv, -maxSpeed, maxSpeed);
+        }
+
+        // click
+        if(a.isMouseClicked()) {
+            fireProjectile();
+        }
     }
 
-    private void update() {
-        x += xv;
-        y += yv;
+    private void fireProjectile() {
 
-        weaponAngle = (Math.atan2(a.mouseX - x, y- a.mouseY) + PConstants.PI);
     }
 
     /******************* HELPER METHODS ********************/

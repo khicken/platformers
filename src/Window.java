@@ -8,7 +8,7 @@ public class Window extends PApplet {
     private static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
     private Dimension screenSize;
 
-    private boolean mouseIsPressed, mouseIsReleased;
+    private boolean mouseIsPressed, mouseIsReleased, mouseIsClicked;
     private boolean[] keys;
 
     private String scene;
@@ -17,6 +17,7 @@ public class Window extends PApplet {
 	public Window() { // init variables
         mouseIsPressed = false;
         mouseIsReleased = false;
+        mouseIsClicked = false;
         keys = new boolean[128];
 
         scene = "title";
@@ -69,6 +70,7 @@ public class Window extends PApplet {
 
     private void pollEvents() {
         mouseIsReleased = false;
+        mouseIsClicked = false;
     }
 
     /******************* INPUT HANDLERS ********************/
@@ -85,6 +87,13 @@ public class Window extends PApplet {
         if(mouseButton == LEFT){
             mouseIsReleased = true;
             mouseIsPressed = false;
+        }
+    }
+
+    @Override
+    public void mouseClicked() {
+        if(mouseButton == LEFT) {
+            mouseIsClicked = false;
         }
     }
 
@@ -106,6 +115,10 @@ public class Window extends PApplet {
 
     public boolean isMouseReleased() {
         return mouseIsReleased;
+    }
+
+    public boolean isMouseClicked() {
+        return mouseIsClicked;
     }
 
     public int getWindowWidth() {
