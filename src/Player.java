@@ -25,24 +25,21 @@ public class Player {
         this.speedMultiplier = 1;
         this.maxSpeed = 7;
 
-        this.weapon = new Weapon(a, "ak47.png", 0, 0, 64, 64);
+        this.weapon = new Weapon(a, "ak47.png", 64, 64);
     }
 
     public void draw() {
         update(); // call variable updates
 
         // player
+        a.noStroke();
         a.fill(255, 0, 0);
         a.rect(x, y, size, size, 5);
 
         // weapon
-        a.fill(0);
-        a.pushMatrix();
-        a.rectMode(PConstants.CENTER);
-        a.translate(x + size/2, y + size/2);
-        a.rotate((float)weaponAngle);
-        weapon.draw();
-        a.popMatrix();
+        if(weaponAngle < -Math.PI/2 && weaponAngle > -3 * Math.PI/2) // flips weapon(and adjusts flipped angle) if mouse is q2 & q3
+            weapon.draw(x+size/2, y+size/2+10, weaponAngle, true);
+        else weapon.draw(x+size/2, y+size/2+10, weaponAngle, false);
 
         // reset to defaults
         a.rectMode(PConstants.CORNER);
@@ -56,6 +53,8 @@ public class Player {
         y += yv;
 
         weaponAngle = (Math.atan2(a.mouseX - x, y- a.mouseY) - PConstants.PI/2);
+        a.text(Double.toString(weaponAngle), 300, 300);
+        a.text(Double.toString(Math.toDegrees(weaponAngle)), 300, 400);
     }
 
     private void move() {
@@ -75,25 +74,18 @@ public class Player {
             xv = constrain(xv, -maxSpeed, maxSpeed);
             yv = constrain(yv, -maxSpeed, maxSpeed);
         }
-
-        // click
-        if(a.isMouseClicked()) {
-            fireProjectile();
-        }
     }
 
-    private void fireProjectile() {
 
-    }
 
     /******************* HELPER METHODS ********************/
     private float constrain(float n, float min, float max) {
         return n > max ? max : n < min ? min : n;
     }
 
-    private double constrain(double n, double min, double max) {
-        return n > max ? max : n < min ? min : n;
-    }
+    // private double constrain(double n, double min, double max) {
+    //     return n > max ? max : n < min ? min : n;
+    // }
 
     /******************* GETTERS AND SETTERS ********************/
     public float getXPos() {

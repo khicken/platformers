@@ -42,6 +42,7 @@ public class Window extends PApplet {
 	public void draw() {
         beginRender();
         
+        pushMatrix();
         switch(scene) {
             case "title":
                 sm.drawTitleScreen();
@@ -53,6 +54,7 @@ public class Window extends PApplet {
                 sm.drawGame();
             break;
         }
+        popMatrix();
 
         endRender();
         pollEvents();
@@ -93,7 +95,7 @@ public class Window extends PApplet {
     @Override
     public void mouseClicked() {
         if(mouseButton == LEFT) {
-            mouseIsClicked = false;
+            mouseIsClicked = true;
         }
     }
 
