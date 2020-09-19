@@ -42,7 +42,6 @@ public class Player {
         a.translate(x + size/2, y + size/2);
         a.rotate((float)weaponAngle);
         weapon.draw();
-        a.rect(0, 0, 5, 45);
         a.popMatrix();
 
         // reset to defaults
@@ -56,7 +55,7 @@ public class Player {
         x += xv;
         y += yv;
 
-        weaponAngle = (Math.atan2(a.mouseX - x, y- a.mouseY) + PConstants.PI);
+        weaponAngle = (Math.atan2(a.mouseX - x, y- a.mouseY) - PConstants.PI/2);
     }
 
     private void move() {
