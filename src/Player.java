@@ -7,7 +7,7 @@ public class Player {
     private float x, y;
     private float xv, yv;
     private int xDir, yDir; // -1 = left/up, 1 = right/down; 0 = no movement
-    private float acceleration, speedMultiplier, maxSpeed;
+    private float acceleration, speedMultiplier, maxSpeed, friction;
     private float size;
 
     private double weaponAngle;
@@ -21,11 +21,12 @@ public class Player {
 
         this.xv = 0;
         this.yv = 0;
-        this.acceleration = 1;
+        this.acceleration = 0.03f;
         this.speedMultiplier = 1;
         this.maxSpeed = 7;
+        this.friction = 0.85f;
 
-        this.weapon = new Weapon(a, "ak47.png", 64, 64);
+        this.weapon = new Weapon(a, "ak47.png", 64, 64, 1.0f);
     }
 
     public void draw() {
@@ -52,7 +53,7 @@ public class Player {
         x += xv;
         y += yv;
 
-        weaponAngle = (Math.atan2(a.mouseX - x, y- a.mouseY) - PConstants.PI/2);
+        weaponAngle = (Math.atan2(a.mouseX - x, y - a.mouseY) - PConstants.PI/2);
         a.text(Double.toString(weaponAngle), 300, 300);
         a.text(Double.toString(Math.toDegrees(weaponAngle)), 300, 400);
     }
@@ -61,11 +62,11 @@ public class Player {
         // wasd movement
         xDir = Main.booleanToInt(a.isKeyPressed(PConstants.RIGHT) || a.isKeyPressed(68)) - Main.booleanToInt(a.isKeyPressed(PConstants.LEFT) || a.isKeyPressed(65));
         yDir = Main.booleanToInt(a.isKeyPressed(PConstants.DOWN) || a.isKeyPressed(83)) - Main.booleanToInt(a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87));
-        if(xDir == 0) xv *= 0.8;
-        if(yDir == 0) yv *= 0.8;
+        if(xDir == 0) xv *= friction;
+        if(yDir == 0) yv *= friction;
 
-        xv += xDir * acceleration * speedMultiplier;
-        yv += yDir * acceleration * speedMultiplier;
+        xv += xDir * acceleration * speedMultiplier * a.getDeltaTime();
+        yv += yDir * acceleration * speedMultiplier * a.getDeltaTime();
         
         if(xDir != 0 && yDir != 0) {
             xv = constrain(xv, (float)(-maxSpeed*0.707106781), (float)(0.707106781*maxSpeed));

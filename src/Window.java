@@ -1,3 +1,5 @@
+import java.util.Calendar;
+
 import processing.core.PApplet;
 
 import java.util.Arrays;
@@ -14,6 +16,9 @@ public class Window extends PApplet {
     private String scene;
     private SceneManager sm;
 
+    private Calendar cal;
+    private long currentTime, pastTime, deltaTime;
+
 	public Window() { // init variables
         mouseIsPressed = false;
         mouseIsReleased = false;
@@ -22,6 +27,9 @@ public class Window extends PApplet {
 
         scene = "title";
         sm = new SceneManager(this);
+        
+        this.cal = Calendar.getInstance();
+        this.pastTime = cal.getTimeInMillis();
     }
     
     public void setup() { // init window variables and papplet inits
@@ -64,6 +72,11 @@ public class Window extends PApplet {
     private void beginRender() {
         background(255); // flush background
         cursor(ARROW);
+
+        cal = Calendar.getInstance();
+        currentTime = cal.getTimeInMillis();
+        deltaTime = currentTime - pastTime;
+        pastTime = currentTime;
     }
 
     private void endRender() {
@@ -129,6 +142,10 @@ public class Window extends PApplet {
 
     public int getWindowHeight() {
         return WINDOW_HEIGHT;
+    }
+
+    public long getDeltaTime() {
+        return deltaTime;
     }
 
     public void switchScene(String s) {

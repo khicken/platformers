@@ -10,14 +10,21 @@ public class Weapon {
     private double aimAngleInRad;
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
+    private float fireRate;
+    private float lastTimeShot;
+
     // NOTE: ALL WEAPONS SHOULD BE TRANSLATED (MOVED BY TRANSFORMATIONS)
     
-    public Weapon(Window a, String imgName, float w, float h) {
+    public Weapon(Window a, String imgName, float w, float h, float fireRate) {
         this.a = a;
         this.x = 0;
         this.y = 0;
         this.w = w;
         this.h = h;
+
+        this.fireRate = fireRate;
+        this.lastTimeShot = 0;
+
         this.img = a.loadImage(".\\..\\assets\\weapons\\" + imgName);
     }
 
@@ -41,14 +48,21 @@ public class Weapon {
         a.image(img, 0, 0);
         a.popMatrix();
 
-        if(a.isMousePressed()) // hold to fire
-            fireProjectile();
+        a.text(bullets.size(), 30, 30);
+
+        if(a.isMousePressed() && (System.nanoTime() - lastTimeShot) > fireRate*1000000000) { // hold to fire
+            lastTimeShot = System.nanoTime();
+            fireNewProjectile();
+        }
+
+        a.text(System.nanoTime(), 300, 100);
+        a.text(System.nanoTime() - lastTimeShot, 300, 200);
 
         for(Bullet b: bullets) // draw new bullets
             b.draw();
     }
 
-    private void fireProjectile() {
+    private void fireNewProjectile() {
         bullets.add(new Bullet(a, x, y, 10, aimAngleInRad));
     }
 }

@@ -39,4 +39,8 @@ public class Bullet {
         xv = (float)Math.cos(angle)*v;
         yv = (float)Math.sin(angle)*v;
     }
+
+    public boolean canFire() {
+        return false;
+    }
 }
