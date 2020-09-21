@@ -6,7 +6,7 @@ public class Game {
 
     public Game(Window a) {
         this.a = a;
-        this.p = new Player(a, 30, 30, 30);
+        this.p = new Player(a, 30, 30, 64, "player.png");
     }
 
     public void draw() {

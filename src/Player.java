@@ -1,23 +1,25 @@
+import processing.core.PImage;
 import processing.core.PConstants;
 import java.lang.Math;
 
 public class Player {
     private Window a;
 
-    private float x, y;
+    private float x, y, w, h, k;
     private float xv, yv;
-    private int xDir, yDir; // -1 = left/up, 1 = right/down; 0 = no movement
+    private int xDir, yDir, imgFlipped; // -1 = left/up, 1 = right/down; 0 = no movement
     private float acceleration, speedMultiplier, maxSpeed, friction;
-    private float size;
+
+    private PImage img;
 
     private double weaponAngle;
     private Weapon weapon;
 
-    public Player(Window a, float x, float y, float size) {
+    public Player(Window a, float x, float y, float w, String fileName) {
         this.a = a;
         this.x = x;
         this.y = y;
-        this.size = size;
+        this.w = w;
 
         this.xv = 0;
         this.yv = 0;
@@ -26,21 +28,32 @@ public class Player {
         this.maxSpeed = 7;
         this.friction = 0.85f;
 
-        this.weapon = new Weapon(a, "ak47.png", 64, 64, 1.0f);
+        img = a.loadImage(".\\..\\assets\\player\\" + fileName);
+        k = img.width/w;
+        h = img.height/k;
+        img.resize((int)w, (int)h);
+        imgFlipped = 1;
+
+        this.weapon = new Weapon(a, "ak47.png", 64, 0.25f);
     }
 
     public void draw() {
         update(); // call variable updates
 
         // player
+        a.imageMode(PConstants.CENTER);
         a.noStroke();
         a.fill(255, 0, 0);
-        a.rect(x, y, size, size, 5);
+        a.pushMatrix();
+        a.translate(x+w/2, y+h/2);
+        a.scale(imgFlipped * 1.0f, 1.0f);
+        a.image(img, 0, 0);
+        a.popMatrix();
 
         // weapon
         if(weaponAngle < -Math.PI/2 && weaponAngle > -3 * Math.PI/2) // flips weapon(and adjusts flipped angle) if mouse is q2 & q3
-            weapon.draw(x+size/2, y+size/2+10, weaponAngle, true);
-        else weapon.draw(x+size/2, y+size/2+10, weaponAngle, false);
+            weapon.draw(x+w/2, y+h, weaponAngle, true);
+        else weapon.draw(x+w/2, y+h, weaponAngle, false);
 
         // reset to defaults
         a.rectMode(PConstants.CORNER);
@@ -53,9 +66,12 @@ public class Player {
         x += xv;
         y += yv;
 
-        weaponAngle = (Math.atan2(a.mouseX - x, y - a.mouseY) - PConstants.PI/2);
+        // if(!weapon.mouseInGunRegion())
+        weaponAngle = (Math.atan2(a.mouseX - weapon.getGunTipX(), weapon.getGunTipY() - a.mouseY) - PConstants.PI/2);
+
+        if(xDir != 0) imgFlipped = xDir;
+
         a.text(Double.toString(weaponAngle), 300, 300);
-        a.text(Double.toString(Math.toDegrees(weaponAngle)), 300, 400);
     }
 
     private void move() {

@@ -1,3 +1,5 @@
+import processing.core.PConstants;
+
 public class Bullet {
     private Window a;
     private float x, y;
@@ -19,13 +21,18 @@ public class Bullet {
     public void draw() {
         update();
 
-        a.pushMatrix();
+        a.rectMode(PConstants.CENTER);
         a.noStroke();
+        
+        a.pushMatrix();
         a.translate(x, y);
-        a.rotate((float)Math.toRadians(angle));
-        a.fill(255, 240, 28);
-        a.rect(0, 0, 6, 12, 3);
+        a.rotate((float)(angle));
+        // a.fill(255, 240, 28);
+        a.fill(0);
+        a.rect(0, 0, 12, 6, 3);
         a.popMatrix();
+
+        a.rectMode(PConstants.CORNER);
 
         move();
     }
@@ -40,7 +47,7 @@ public class Bullet {
         yv = (float)Math.sin(angle)*v;
     }
 
-    public boolean canFire() {
-        return false;
+    public boolean collides() {
+        return true;
     }
 }
