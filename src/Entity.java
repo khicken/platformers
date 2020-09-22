@@ -10,8 +10,8 @@ public class Entity {
     /***
      * Creates a new collidable object with a sprite
      * @param a
-     * @param x Center of object
-     * @param y Center of object
+     * @param x Corner of object
+     * @param y Corner of object
      * @param w
      * @param rootPath
      * @param fileName
@@ -27,11 +27,11 @@ public class Entity {
         this.h = img.height/k;
         img.resize((int)this.w, (int)this.h);
 
-        this.left = this.x
+        this.left = this.x;
     }
 
     public void draw() {
-        a.imageMode(PConstants.CENTER);
+        a.imageMode(PConstants.CORNER);
         a.pushMatrix();
         a.translate(x, y);
         a.image(img, 0, 0);
@@ -65,10 +65,25 @@ public class Entity {
      */
 
     public int colliding(Entity e) {
-        if(this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos()) // if object is already within other object's x bounds
-            if(this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos()) return 2; // if object now hits y bounds its vertical
-        if(this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos()) // vice versa but check vertical first
-            if(this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos()) return 1;
+        if(this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos()) {// if object is already within other object's x bounds
+            if(this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos()) {
+                if(this.y <= e.getYPos() + e.getHeight() && this.y >= e.getYPos()) { // if object's top collides with other object's bottom
+                    this.y = e.getYPos() + e.getHeight();
+                    return 2;
+                } // if object's bottom collides with other object's top (no else statement needed as return exits method)
+                this.y = e.getYPos() - this.h;
+                return 2;
+            }
+        } if(this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos()){ // vice versa but check vertical first
+            if(this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos()) {
+                if(this.x <= e.getXPos() + e.getWidth() && this.x >= e.getXPos()) { // if object's left collides with other object's right
+                    this.x = e.getXPos() + e.getWidth();
+                    return 1;
+                } // if object's right collides with other object's left (no else statement needed as return exits method)
+                this.x = e.getXPos() - this.w;
+                return 1;
+            }
+        }
         return 0;
     }
 }

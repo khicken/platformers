@@ -13,7 +13,7 @@ public class Game {
         this.walls = new ArrayList<Wall>();
 
         enemies.add(new Enemy(a, 400, 400, 64, "enemy.png"));
-        walls.add(new Wall(a, 100, 100, 50, "wall.png"));
+        walls.add(new Wall(a, 100, 100, 200, "wall.png"));
     }
 
     public void draw() {
@@ -31,5 +31,7 @@ public class Game {
             p.playerCollision(w);
         }
         
+        a.fill(0);
+        a.text(a.mouseX + ", " + a.mouseY, a.mouseX + 10, a.mouseY + 10);
     }
 }
