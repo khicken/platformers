@@ -2,24 +2,16 @@ import processing.core.PImage;
 import processing.core.PConstants;
 import java.lang.Math;
 
-public class Player {
-    private Window a;
-
-    private float x, y, w, h, k;
+public class Player extends Entity {
     private float xv, yv;
     private int xDir, yDir, imgFlipped; // -1 = left/up, 1 = right/down; 0 = no movement
     private float acceleration, speedMultiplier, maxSpeed, friction;
-
-    private PImage img;
 
     private double weaponAngle;
     private Weapon weapon;
 
     public Player(Window a, float x, float y, float w, String fileName) {
-        this.a = a;
-        this.x = x;
-        this.y = y;
-        this.w = w;
+        super(a, x, y, w, ".\\..\\assets\\player\\", fileName);
 
         this.xv = 0;
         this.yv = 0;
@@ -28,15 +20,12 @@ public class Player {
         this.maxSpeed = 7;
         this.friction = 0.85f;
 
-        img = a.loadImage(".\\..\\assets\\player\\" + fileName);
-        k = img.width/w;
-        h = img.height/k;
-        img.resize((int)w, (int)h);
         imgFlipped = 1;
 
         this.weapon = new Weapon(a, "ak47.png", 64, 0.25f);
     }
 
+    @Override
     public void draw() {
         update(); // call variable updates
 
@@ -49,6 +38,7 @@ public class Player {
         a.scale(imgFlipped * 1.0f, 1.0f);
         a.image(img, 0, 0);
         a.popMatrix();
+
 
         // weapon
         if(weaponAngle < -Math.PI/2 && weaponAngle > -3 * Math.PI/2) // flips weapon(and adjusts flipped angle) if mouse is q2 & q3
@@ -70,8 +60,6 @@ public class Player {
         weaponAngle = (Math.atan2(a.mouseX - weapon.getGunTipX(), weapon.getGunTipY() - a.mouseY) - PConstants.PI/2);
 
         if(xDir != 0) imgFlipped = xDir;
-
-        a.text(Double.toString(weaponAngle), 300, 300);
     }
 
     private void move() {
@@ -93,7 +81,10 @@ public class Player {
         }
     }
 
-
+    public void playerCollision(Entity e) {
+        if(this.colliding(e) == 1) xv = 0;
+        if(this.colliding(e) == 2) yv = 0;
+    }
 
     /******************* HELPER METHODS ********************/
     private float constrain(float n, float min, float max) {
@@ -103,13 +94,4 @@ public class Player {
     // private double constrain(double n, double min, double max) {
     //     return n > max ? max : n < min ? min : n;
     // }
-
-    /******************* GETTERS AND SETTERS ********************/
-    public float getXPos() {
-        return x;
-    }
-
-    public float getYPos() {
-        return y;
-    }
 }
