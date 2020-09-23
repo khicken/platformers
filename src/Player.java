@@ -82,7 +82,9 @@ public class Player extends Entity {
     }
 
     public void playerCollision(Entity e) {
-        if(this.colliding(e) == 1) xv = 0;
+        if(this.colliding(e) == 1) {
+            xv = -xv;
+        }
         // if(this.colliding(e) == 2) yv = 0;
     }
 

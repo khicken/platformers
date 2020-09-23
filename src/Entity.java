@@ -65,25 +65,29 @@ public class Entity {
      */
 
     public int colliding(Entity e) {
-        if(this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos()) {// if object is already within other object's x bounds
-            if(this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos()) {
-                if(this.y <= e.getYPos() + e.getHeight() && this.y >= e.getYPos()) { // if object's top collides with other object's bottom
-                    this.y = e.getYPos() + e.getHeight();
-                    return 2;
-                } // if object's bottom collides with other object's top (no else statement needed as return exits method)
-                this.y = e.getYPos() - this.h;
-                return 2;
-            }
-        } if(this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos()){ // vice versa but check vertical first
-            if(this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos()) {
-                if(this.x <= e.getXPos() + e.getWidth() && this.x >= e.getXPos()) { // if object's left collides with other object's right
-                    this.x = e.getXPos() + e.getWidth();
-                    return 1;
-                } // if object's right collides with other object's left (no else statement needed as return exits method)
-                this.x = e.getXPos() - this.w;
-                return 1;
-            }
-        }
+        if(this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos() && (this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos())) return 1; // if this obj's left passes other's right
+        // else if(this.x + this.w >= e.getXPos() && (this.y <= e.getYPos() + e.getHeight() || this.y + this.h >= e.getYPos())) return 1; // if this obj's right passes other's left
+
+        // if((this.x <= e.getXPos() + e.getWidth() || this.x + this.w >= e.getXPos()) && (this.y <= e.getYPos() + e.getHeight() || this.y + this.h >= e.getYPos())) {// if object is already within other object's x bounds
+
+        //     if(this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos()) {
+        //         if(this.y <= e.getYPos() + e.getHeight() && this.y >= e.getYPos()) { // if object's top collides with other object's bottom
+        //             this.y = e.getYPos() + e.getHeight();
+        //             return 2;
+        //         } // if object's bottom collides with other object's top (no else statement needed as return exits method)
+        //         this.y = e.getYPos() - this.h;
+        //         return 2;
+        //     }
+        // } else if(this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos()){ // vice versa but check vertical first
+        //     if(this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos()) {
+        //         if(this.x <= e.getXPos() + e.getWidth() && this.x >= e.getXPos()) { // if object's left collides with other object's right
+        //             this.x = e.getXPos() + e.getWidth();
+        //             return 1;
+        //         } // if object's right collides with other object's left (no else statement needed as return exits method)
+        //         this.x = e.getXPos() - this.w;
+        //         return 1;
+        //     }
+        // }
         return 0;
     }
 }
