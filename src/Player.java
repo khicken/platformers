@@ -1,7 +1,7 @@
 import processing.core.PImage;
 import processing.core.PConstants;
 import java.lang.Math;
-
+// work on bullet later
 public class Player extends Entity {
     private float xv, yv;
     private int xDir, yDir, imgFlipped; // -1 = left/up, 1 = right/down; 0 = no movement
