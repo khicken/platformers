@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 
 public class Window extends PApplet {
     private static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
+    private static float WINDOW_RATIO_WIDTH = 1.0f, WINDOW_RATIO_HEIGHT = 1.0f;
     private Dimension screenSize;
 
     private boolean mouseIsPressed, mouseIsReleased, mouseIsClicked;
@@ -25,7 +26,7 @@ public class Window extends PApplet {
         mouseIsClicked = false;
         keys = new boolean[128];
 
-        scene = "title";
+        scene = "game";
         sm = new SceneManager(this);
         
         this.cal = Calendar.getInstance();
@@ -51,6 +52,8 @@ public class Window extends PApplet {
         beginRender();
         
         pushMatrix();
+        // translate()
+        // scale(1.5f, 1.5f);
         switch(scene) {
             case "title":
                 sm.drawTitleScreen();
@@ -155,6 +158,9 @@ public class Window extends PApplet {
     public void setWindowSize(int width, int height) {
         WINDOW_WIDTH = width;
         WINDOW_HEIGHT = height;
+        WINDOW_RATIO_WIDTH = width/1280;
+        WINDOW_RATIO_HEIGHT = height/720;
+
         surface.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
@@ -164,5 +170,13 @@ public class Window extends PApplet {
 
     public boolean isKeyPressed(int key) {
         return keys[key];
+    }
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
     }
 }

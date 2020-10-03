@@ -25,7 +25,7 @@ public class Player extends Entity {
 
         imgFlipped = 1;
 
-        this.weapon = new Weapon(a, "ak47.png", 64, 0.25f);
+        this.weapon = new Weapon(a, "ak47.png", 64, 0.1f, 1.0f, 50);
     }
 
     @Override
@@ -55,9 +55,11 @@ public class Player extends Entity {
     }
 
     private void update() {
-        weaponAngle = (Math.atan2(a.mouseX - weapon.getGunTipX(), weapon.getGunTipY() - a.mouseY) - PConstants.PI/2);
+        weaponAngle = (Math.atan2(a.getMouseX() - weapon.getWeaponX(), weapon.getWeaponY() - a.getMouseY()) - PConstants.PI/2);
 
         if(xDir != 0) imgFlipped = xDir;
+        if(a.isKeyPressed(82))
+            weapon.reload();
     }
 
     private void move() {
@@ -93,5 +95,9 @@ public class Player extends Entity {
 
     public void updateEnemyList(ArrayList<Enemy> e) {
         weapon.updateEnemylist(e);
+    }
+
+    public Weapon getPlayerWeapon() {
+        return weapon;
     }
 }

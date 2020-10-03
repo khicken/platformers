@@ -47,7 +47,7 @@ public class Button {
     }
     
     private boolean hovering() { // check if mouse inbounds
-        return a.mouseX > this.x && a.mouseX < this.x + this.w && a.mouseY > this.y && a.mouseY < this.y + this.h;
+        return a.getMouseX() > this.x && a.getMouseX() < this.x + this.w && a.getMouseY() > this.y && a.getMouseY() < this.y + this.h;
     }
     
     public void setText(String txt) { // set text of button

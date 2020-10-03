@@ -32,11 +32,15 @@ public class Game {
             w.draw();
             p.playerCollision(w);
         }
-
-
         
+        drawStats();
+
         a.fill(0);
         a.text(a.mouseX + ", " + a.mouseY, a.mouseX + 10, a.mouseY + 10);
+    }
+
+    private void drawStats() {
+        a.text("Bullets left: " + p.getPlayerWeapon().getBulletsLeft(), 400, 400);
     }
 
     private void updateObjects() {

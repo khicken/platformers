@@ -21,8 +21,13 @@ public class Weapon {
 
     private float fireRate;
     private long lastTimeShot;
+
+    private float reloadTime;
+    private int magazineCapacity, bulletsLeftInMagazine;
+    private long startReloadingTime;
+    private boolean reloading;
     
-    public Weapon(Window a, String imgName, float w, float fireRate) {
+    public Weapon(Window a, String imgName, float w, float fireRate, float reloadTime, int magazineCapacity) {
         this.a = a;
         this.x = 0;
         this.y = 0;
@@ -31,6 +36,10 @@ public class Weapon {
 
         this.fireRate = fireRate;
         this.lastTimeShot = 0;
+
+        this.reloadTime = reloadTime;
+        this.magazineCapacity = magazineCapacity;
+        this.bulletsLeftInMagazine = magazineCapacity;
 
         this.img = a.loadImage(".\\..\\assets\\weapons\\" + imgName);
 
@@ -64,8 +73,11 @@ public class Weapon {
 
         a.text(bullets.size(), 30, 30);
 
-        if(a.isMousePressed() && (System.nanoTime() - lastTimeShot) > fireRate*1000000000) { // hold to fire
+
+        checkForReload();
+        if(a.isMousePressed() && (System.nanoTime() - lastTimeShot) > fireRate*1000000000 && bulletsLeftInMagazine != 0 && !reloading) { // hold to fire
             lastTimeShot = System.nanoTime();
+            bulletsLeftInMagazine--;
             fireNewProjectile();
         }
 
@@ -83,23 +95,42 @@ public class Weapon {
         }
     }
 
+    public void reload() {
+        if(bulletsLeftInMagazine == magazineCapacity || reloading) return;
+        startReloadingTime = System.currentTimeMillis();
+        reloading = true; // set reloading status to true so the reloading wont reset when called again
+    }
+
+    private void checkForReload() {
+        if(bulletsLeftInMagazine == 0) reload(); // autoreload
+        if(reloading && System.currentTimeMillis() - startReloadingTime >= reloadTime*1000) {
+            bulletsLeftInMagazine = magazineCapacity;
+            reloading = false;
+        }
+    }
+
     public void updateEnemylist(ArrayList<Enemy> e) {
         enemies = e;
     }
 
-    public float getGunTipX() {
-        return x; // + (float)(gunTipRadius * Math.cos(aimAngleInRad));
-    }
-
-    public float getGunTipY() { 
-        return y; // + (float)(gunTipRadius * Math.sin(aimAngleInRad)) - 5;
-    }
-
-    // public boolean mouseInGunRegion() {
-    //     return PApplet.dist(x, y, a.mouseX, a.mouseY) <= gunTipRadius * 2;
-    // }
-
     private void fireNewProjectile() {
         bullets.add(new Bullet(a, gunTipX, gunTipY, 10, aimAngleInRad, 3.0f));
+    }
+
+    /******************* GETTERS AND SETTERS ********************/
+    public float getWeaponX() {
+        return x;
+    }
+
+    public float getWeaponY() {
+        return y;
+    }
+
+    public int getBulletsLeft() {
+        return bulletsLeftInMagazine;
+    }
+
+    public int getMagazineCapacity() {
+        return magazineCapacity;
     }
 }
