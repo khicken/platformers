@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.lang.Math;
 
@@ -16,6 +17,7 @@ public class Weapon {
 
     private double aimAngleInRad;
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+    private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
     private float fireRate;
     private long lastTimeShot;
@@ -67,8 +69,22 @@ public class Weapon {
             fireNewProjectile();
         }
 
-        for(Bullet b: bullets) // draw new bullets
+        // for(Bullet b: bullets) { // draw new bullets
+        //     b.draw();
+        //     if(b.hasCollided(enemies.get(0)))
+        //         bullets.remove(b);
+        // }
+
+        for(Iterator<Bullet> i = bullets.iterator(); i.hasNext();) {
+            Bullet b = i.next();
             b.draw();
+            if(b.hasCollided(enemies.get(0)) || b.hasExpired())
+                i.remove();
+        }
+    }
+
+    public void updateEnemylist(ArrayList<Enemy> e) {
+        enemies = e;
     }
 
     public float getGunTipX() {
@@ -79,11 +95,11 @@ public class Weapon {
         return y; // + (float)(gunTipRadius * Math.sin(aimAngleInRad)) - 5;
     }
 
-    public boolean mouseInGunRegion() {
-        return PApplet.dist(x, y, a.mouseX, a.mouseY) <= gunTipRadius*2;
-    }
+    // public boolean mouseInGunRegion() {
+    //     return PApplet.dist(x, y, a.mouseX, a.mouseY) <= gunTipRadius * 2;
+    // }
 
     private void fireNewProjectile() {
-        bullets.add(new Bullet(a, gunTipX, gunTipY, 10, aimAngleInRad));
+        bullets.add(new Bullet(a, gunTipX, gunTipY, 10, aimAngleInRad, 3.0f));
     }
 }

@@ -1,13 +1,17 @@
 import processing.core.PConstants;
 
-public class Bullet {
+public class Bullet extends Entity {
     private Window a;
     private float x, y;
     private float v; // velocity of bullet vector
     private double angle; // angle of bullet vector (in deg)
     private float xv, yv;
 
-    public Bullet(Window a, float x, float y, float v, double angleInDeg) {
+    private long timeCreated;
+    private float timeToLive; // how long the bullet can exist until getting removed
+
+    public Bullet(Window a, float x, float y, float v, double angleInDeg, float timeToLive) {
+        super(a, x, y);
         this.a = a;
         this.x = x;
         this.y = y;
@@ -16,6 +20,9 @@ public class Bullet {
 
         this.xv = 0;
         this.yv = 0;
+
+        this.timeToLive = timeToLive;
+        this.timeCreated = System.currentTimeMillis();
     }
 
     public void draw() {
@@ -47,7 +54,15 @@ public class Bullet {
         yv = (float)Math.sin(angle)*v;
     }
 
-    public boolean collides() {
-        return true;
+    public boolean hasCollided(Entity e) {
+        if(colliding(x + xv, y, e))
+            while(!colliding(x, y, e)) return true;
+        if(colliding(x, y + yv, e))
+            while(!colliding(x, y, e)) return true;
+        return false;
+    }
+
+    public boolean hasExpired() {
+        return (System.currentTimeMillis() - timeCreated) > timeToLive*1000;
     }
 }

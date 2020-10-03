@@ -1,2 +1,2 @@
 # jakes-adventure
-some random fps game, it's a work in progress
+A 2D shooter game with action, adventure, and stupidity in Java

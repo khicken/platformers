@@ -23,6 +23,8 @@ public class Game {
         a.textFont(a.createFont("Trebuchet MS", 35));
         a.text("gayme", a.getWindowWidth()/2, a.getWindowHeight()/8);
 
+        updateObjects();
+
         p.draw();
         for(Enemy en: enemies)
             en.draw();
@@ -30,8 +32,14 @@ public class Game {
             w.draw();
             p.playerCollision(w);
         }
+
+
         
         a.fill(0);
         a.text(a.mouseX + ", " + a.mouseY, a.mouseX + 10, a.mouseY + 10);
+    }
+
+    private void updateObjects() {
+        p.updateEnemyList(enemies);
     }
 }

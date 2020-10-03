@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import processing.core.PImage;
 import processing.core.PConstants;
 import java.lang.Math;
@@ -9,6 +10,8 @@ public class Player extends Entity {
 
     private double weaponAngle;
     private Weapon weapon;
+
+    // private ArrayList<Enemy> enemies;
 
     public Player(Window a, float x, float y, float w, String fileName) {
         super(a, x, y, w, ".\\..\\assets\\player\\", fileName);
@@ -39,7 +42,6 @@ public class Player extends Entity {
         a.image(img, 0, 0);
         a.popMatrix();
 
-
         // weapon
         if(weaponAngle < -Math.PI/2 && weaponAngle > -3 * Math.PI/2) // flips weapon(and adjusts flipped angle) if mouse is q2 & q3
             weapon.draw(x+w/2, y+h, weaponAngle, true);
@@ -53,10 +55,6 @@ public class Player extends Entity {
     }
 
     private void update() {
-        x += xv;
-        y += yv;
-
-        // if(!weapon.mouseInGunRegion())
         weaponAngle = (Math.atan2(a.mouseX - weapon.getGunTipX(), weapon.getGunTipY() - a.mouseY) - PConstants.PI/2);
 
         if(xDir != 0) imgFlipped = xDir;
@@ -82,18 +80,18 @@ public class Player extends Entity {
     }
 
     public void playerCollision(Entity e) {
-        if(this.colliding(e) == 1) {
-            xv = -xv;
-        }
-        // if(this.colliding(e) == 2) yv = 0;
+        if(colliding(x + xv, y, e))
+            while(!colliding(x + sign(xv), y, e)) x += sign(xv);
+        else
+            x += xv;
+
+        if(colliding(x, y + yv, e))
+            while(!colliding(x, y + sign(yv), e)) y += sign(yv);
+        else
+            y += yv;
     }
 
-    /******************* HELPER METHODS ********************/
-    private float constrain(float n, float min, float max) {
-        return n > max ? max : n < min ? min : n;
+    public void updateEnemyList(ArrayList<Enemy> e) {
+        weapon.updateEnemylist(e);
     }
-
-    // private double constrain(double n, double min, double max) {
-    //     return n > max ? max : n < min ? min : n;
-    // }
 }
