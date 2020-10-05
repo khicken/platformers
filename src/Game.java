@@ -1,3 +1,4 @@
+// import processing.video.Movie;
 import java.util.ArrayList;
 
 public class Game {
@@ -5,6 +6,8 @@ public class Game {
     private Player p;
     private ArrayList<Enemy> enemies;
     private ArrayList<Wall> walls;
+
+    // private Movie m;
 
     public Game(Window a) {
         this.a = a;
@@ -14,11 +17,15 @@ public class Game {
 
         enemies.add(new Enemy(a, 400, 400, 64, "enemy.png"));
         walls.add(new Wall(a, 100, 100, 200, "wall.png"));
+
+        // m = new Movie(a, "./assets/test.mov");
+        // m.play();
     }
 
     public void draw() {
         a.background(150);
 
+        // a.image(m, 0, 0);
         a.fill(0);
         a.textFont(a.createFont("Trebuchet MS", 35));
         a.text("gayme", a.getWindowWidth()/2, a.getWindowHeight()/8);

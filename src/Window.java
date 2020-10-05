@@ -1,6 +1,7 @@
 import java.util.Calendar;
 
 import processing.core.PApplet;
+import processing.video.*;
 
 import java.util.Arrays;
 import java.awt.Dimension;
@@ -12,6 +13,7 @@ public class Window extends PApplet {
     private Dimension screenSize;
 
     private boolean mouseIsPressed, mouseIsReleased, mouseIsClicked;
+    private double windowMouseX, windowMouseY;
     private boolean[] keys;
 
     private String scene;
@@ -26,7 +28,7 @@ public class Window extends PApplet {
         mouseIsClicked = false;
         keys = new boolean[128];
 
-        scene = "game";
+        scene = "title";
         sm = new SceneManager(this);
         
         this.cal = Calendar.getInstance();
@@ -53,7 +55,7 @@ public class Window extends PApplet {
         
         pushMatrix();
         // translate()
-        // scale(1.5f, 1.5f);
+        scale(WINDOW_RATIO_WIDTH, WINDOW_RATIO_HEIGHT);
         switch(scene) {
             case "title":
                 sm.drawTitleScreen();
@@ -76,6 +78,9 @@ public class Window extends PApplet {
         background(255); // flush background
         cursor(ARROW);
 
+        windowMouseX = mouseX / WINDOW_RATIO_WIDTH;
+        windowMouseY = mouseY / WINDOW_RATIO_HEIGHT;
+        
         cal = Calendar.getInstance();
         currentTime = cal.getTimeInMillis();
         deltaTime = currentTime - pastTime;
@@ -117,7 +122,10 @@ public class Window extends PApplet {
 
     @Override
     public void keyPressed() {
-        if(keyCode <= keys.length-1) keys[keyCode] = true;
+        if(keyCode <= keys.length-1) {
+            if(key == ESC) key = 0; // disable escape key to close window
+            keys[keyCode] = true;
+        }
     }
     
     @Override
@@ -125,6 +133,9 @@ public class Window extends PApplet {
         if(keyCode <= keys.length-1) keys[keyCode] = false;
     }
 
+    public void movieEvent(Movie m) {
+        m.read();
+    }
 
     /******************* GETTERS AND SETTERS ********************/
     public boolean isMousePressed() {
@@ -158,9 +169,9 @@ public class Window extends PApplet {
     public void setWindowSize(int width, int height) {
         WINDOW_WIDTH = width;
         WINDOW_HEIGHT = height;
-        WINDOW_RATIO_WIDTH = width/1280;
-        WINDOW_RATIO_HEIGHT = height/720;
-
+        WINDOW_RATIO_WIDTH = (float)width/1280.0f;
+        WINDOW_RATIO_HEIGHT = (float)height/720.0f;
+        System.out.println(WINDOW_RATIO_HEIGHT + ", " + WINDOW_RATIO_HEIGHT);
         surface.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
@@ -173,10 +184,10 @@ public class Window extends PApplet {
     }
 
     public double getMouseX() {
-        return mouseX;
+        return windowMouseX;
     }
 
     public double getMouseY() {
-        return mouseY;
+        return windowMouseY;
     }
 }

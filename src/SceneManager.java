@@ -48,8 +48,8 @@ public class SceneManager {
     }
 
     public void initSettings() {
-        settingScrollers.add(new ArrayScroller(a, a.getWindowWidth()/2, a.getWindowHeight()/2, 250, resolutionScrollerValues));
-        settingButtons.add(new Button(a, a.getWindowWidth()/2 - 100, a.getWindowHeight()/4, 200, 50, "Apply", a.color(178)));
+        settingScrollers.add(new ArrayScroller(a, 100, 100, 250, resolutionScrollerValues));
+        settingButtons.add(new Button(a, 100, 100, 200, 50, "Apply", a.color(178)));
     }
 
     public void drawSettings() { // note: background will not change other than blur
