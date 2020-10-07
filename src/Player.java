@@ -76,8 +76,8 @@ public class Player extends Entity {
         // if(yDir == 0) yv *= friction;
         if(jumps > 0 && (a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87))) {
             System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-            yv = -10;
-            jumps--;
+            yv += -5;
+            // jumps--;
         }
 
         xv += xDir * acceleration * speedMultiplier * a.getUniversalScalar();
