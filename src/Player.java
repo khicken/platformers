@@ -1,27 +1,31 @@
 import java.util.ArrayList;
-import processing.core.PImage;
 import processing.core.PConstants;
 import java.lang.Math;
 // work on bullet later
 public class Player extends Entity {
     private float xv, yv;
-    private int xDir, yDir, imgFlipped; // -1 = left/up, 1 = right/down; 0 = no movement
+    private int xDir, imgFlipped; // -1 = left/up, 1 = right/down; 0 = no movement
     private float acceleration, speedMultiplier, maxSpeed, friction;
+    private int jumps, jumpMax;
 
     private double weaponAngle;
     private Weapon weapon;
 
     // private ArrayList<Enemy> enemies;
+    private float gravity = 9.81f;
 
     public Player(Window a, float x, float y, float w, String fileName) {
         super(a, x, y, w, ".\\..\\assets\\player\\", fileName);
 
         this.xv = 0;
         this.yv = 0;
-        this.acceleration = 0.03f;
+        this.acceleration = 5f;
         this.speedMultiplier = 1;
         this.maxSpeed = 7;
         this.friction = 0.85f;
+
+        this.jumpMax = 3;
+        this.jumps = jumpMax;
 
         imgFlipped = 1;
 
@@ -57,6 +61,8 @@ public class Player extends Entity {
     private void update() {
         weaponAngle = (Math.atan2(a.getMouseX() - weapon.getWeaponX(), weapon.getWeaponY() - a.getMouseY()) - PConstants.PI/2);
 
+        yv += (gravity * a.getUniversalScalar());
+
         if(xDir != 0) imgFlipped = xDir;
         if(a.isKeyPressed(82))
             weapon.reload();
@@ -65,31 +71,42 @@ public class Player extends Entity {
     private void move() {
         // wasd movement
         xDir = Main.booleanToInt(a.isKeyPressed(PConstants.RIGHT) || a.isKeyPressed(68)) - Main.booleanToInt(a.isKeyPressed(PConstants.LEFT) || a.isKeyPressed(65));
-        yDir = Main.booleanToInt(a.isKeyPressed(PConstants.DOWN) || a.isKeyPressed(83)) - Main.booleanToInt(a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87));
+        // yDir = Main.booleanToInt(a.isKeyPressed(PConstants.DOWN) || a.isKeyPressed(83)) - );
         if(xDir == 0) xv *= friction;
-        if(yDir == 0) yv *= friction;
-
-        xv += xDir * acceleration * speedMultiplier * a.getDeltaTime();
-        yv += yDir * acceleration * speedMultiplier * a.getDeltaTime();
-        
-        if(xDir != 0 && yDir != 0) {
-            xv = constrain(xv, (float)(-maxSpeed*0.707106781), (float)(0.707106781*maxSpeed));
-            yv = constrain(yv, (float)(-maxSpeed*0.707106781), (float)(0.707106781*maxSpeed));
-        } else {
-            xv = constrain(xv, -maxSpeed, maxSpeed);
-            yv = constrain(yv, -maxSpeed, maxSpeed);
+        // if(yDir == 0) yv *= friction;
+        if(jumps > 0 && (a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87))) {
+            System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+            yv = -10;
+            jumps--;
         }
+
+        xv += xDir * acceleration * speedMultiplier * a.getUniversalScalar();
+
+        a.text(Float.toString(x) + " , " + Float.toString(y), 300, 300);
+        // yv += yDir * acceleration * speedMultiplier * a.getDeltaTime();
+        
+        // if(xDir != 0 && yDir != 0) {
+        //     xv = constrain(xv, (float)(-maxSpeed*0.707106781), (float)(0.707106781*maxSpeed));
+        //     yv = constrain(yv, (float)(-maxSpeed*0.707106781), (float)(0.707106781*maxSpeed));
+        // } else {
+            xv = constrain(xv, -maxSpeed, maxSpeed);
+            yv = constrain(yv, -100, 50);
+            // yv = constrain(yv, -maxSpeed, maxSpeed);
+        // }
     }
 
     public void playerCollision(Entity e) {
-        if(colliding(x + xv, y, e))
+        if(colliding(x + xv, y, e)) {
             while(!colliding(x + sign(xv), y, e)) x += sign(xv);
-        else
+            xv = 0;
+        } else
             x += xv;
 
-        if(colliding(x, y + yv, e))
+        if(colliding(x, y + yv, e)) {
             while(!colliding(x, y + sign(yv), e)) y += sign(yv);
-        else
+            yv = 0;
+            jumps = jumpMax;
+        } else
             y += yv;
     }
 

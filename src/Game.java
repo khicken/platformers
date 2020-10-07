@@ -16,7 +16,7 @@ public class Game {
         this.walls = new ArrayList<Wall>();
 
         enemies.add(new Enemy(a, 400, 400, 64, "enemy.png"));
-        walls.add(new Wall(a, 100, 100, 200, "wall.png"));
+        walls.add(new Wall(a, 500, 600, 200, "wall.png"));
 
         // m = new Movie(a, "./assets/test.mov");
         // m.play();

@@ -3,6 +3,8 @@
 
 import java.util.ArrayList;
 
+import processing.core.PConstants;
+
 public class SceneManager {
     // main class used to swap and navigate between different screens
 
@@ -71,5 +73,6 @@ public class SceneManager {
 
     public void drawGame() {
         g.draw();
+        if(a.isKeyPressed(PConstants.ESC)) a.switchScene("title");
     }
 }

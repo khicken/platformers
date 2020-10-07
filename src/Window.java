@@ -20,7 +20,8 @@ public class Window extends PApplet {
     private SceneManager sm;
 
     private Calendar cal;
-    private long currentTime, pastTime, deltaTime;
+    private long currentTime, pastTime = 1L;
+    private float deltaTime;
 
 	public Window() { // init variables
         mouseIsPressed = false;
@@ -81,9 +82,9 @@ public class Window extends PApplet {
         windowMouseX = mouseX / WINDOW_RATIO_WIDTH;
         windowMouseY = mouseY / WINDOW_RATIO_HEIGHT;
         
-        cal = Calendar.getInstance();
-        currentTime = cal.getTimeInMillis();
-        deltaTime = currentTime - pastTime;
+        currentTime = Calendar.getInstance().getTimeInMillis();
+        deltaTime = (currentTime - pastTime)/16.7f;
+        System.out.println(deltaTime);
         pastTime = currentTime;
     }
 
@@ -158,8 +159,8 @@ public class Window extends PApplet {
         return WINDOW_HEIGHT;
     }
 
-    public long getDeltaTime() {
-        return deltaTime;
+    public float getUniversalScalar() {
+        return deltaTime/10;
     }
 
     public void switchScene(String s) {
