@@ -16,7 +16,8 @@ public class Game {
         this.walls = new ArrayList<Wall>();
 
         enemies.add(new Enemy(a, 400, 400, 64, "enemy.png"));
-        walls.add(new Wall(a, 500, 600, 200, "wall.png"));
+        // walls.add(new Wall(a, 0, 500, 100, "wall.png"));
+        walls.add(new Wall(a, 0, 620, 2000, "ground.png"));
 
         // m = new Movie(a, "./assets/test.mov");
         // m.play();
@@ -33,12 +34,13 @@ public class Game {
         updateObjects();
 
         p.draw();
-        for(Enemy en: enemies)
+        for(Enemy en: enemies) {
             en.draw();
-        for(Wall w: walls) {
-            w.draw();
-            p.playerCollision(w);
+            en.enemyCollision(walls);
         }
+        for(Wall w: walls)
+            w.draw();
+        p.playerCollision(walls);
         
         drawStats();
 

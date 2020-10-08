@@ -6,6 +6,7 @@ import processing.video.*;
 import java.util.Arrays;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Types;
 
 public class Window extends PApplet {
     private static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
@@ -14,7 +15,7 @@ public class Window extends PApplet {
 
     private boolean mouseIsPressed, mouseIsReleased, mouseIsClicked;
     private double windowMouseX, windowMouseY;
-    private boolean[] keys;
+    private boolean[] keys, keysReleased;
 
     private String scene;
     private SceneManager sm;
@@ -28,6 +29,7 @@ public class Window extends PApplet {
         mouseIsReleased = false;
         mouseIsClicked = false;
         keys = new boolean[128];
+        keysReleased = new boolean[128];
 
         scene = "title";
         sm = new SceneManager(this);
@@ -44,6 +46,7 @@ public class Window extends PApplet {
         centerWindow();
 
         Arrays.fill(keys, false); // init every element in keys array to not pressed
+        Arrays.fill(keysReleased, false);
 
         surface.setVisible(true);
         sm.initTitleScreen();
@@ -84,12 +87,13 @@ public class Window extends PApplet {
         
         currentTime = Calendar.getInstance().getTimeInMillis();
         deltaTime = (currentTime - pastTime)/16.7f;
-        System.out.println(deltaTime);
         pastTime = currentTime;
+
+        Arrays.fill(keysReleased, false);
     }
 
     private void endRender() {
-        
+        // rip
     }
 
     private void pollEvents() {
@@ -126,12 +130,14 @@ public class Window extends PApplet {
         if(keyCode <= keys.length-1) {
             if(key == ESC) key = 0; // disable escape key to close window
             keys[keyCode] = true;
+            keysReleased[keyCode] = false;
         }
     }
     
     @Override
     public void keyReleased() {
         if(keyCode <= keys.length-1) keys[keyCode] = false;
+        if(keyCode <= keysReleased.length-1) keysReleased[keyCode] = true;
     }
 
     public void movieEvent(Movie m) {
@@ -180,9 +186,17 @@ public class Window extends PApplet {
         surface.setLocation(((int)screenSize.getWidth()-WINDOW_WIDTH)/2, ((int)screenSize.getHeight()-WINDOW_HEIGHT)/2);
     }
 
-    public boolean isKeyPressed(int key) {
-        return keys[key];
+    public boolean isKeyPressed(int k) {
+        return keys[k];
     }
+
+    public boolean isKeyReleased(int k) {
+        return keys[k];
+    }
+
+    // public boolean isKeyTyped(int k) {
+    //     return typedKeys[k];
+    // }
 
     public double getMouseX() {
         return windowMouseX;
