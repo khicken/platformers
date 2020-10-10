@@ -81,16 +81,12 @@ public class Weapon {
             fireNewProjectile();
         }
 
-        // for(Bullet b: bullets) { // draw new bullets
-        //     b.draw();
-        //     if(b.hasCollided(enemies.get(0)))
-        //         bullets.remove(b);
-        // }
-
         for(Iterator<Bullet> i = bullets.iterator(); i.hasNext();) {
             Bullet b = i.next();
             b.draw();
-            if(b.hasCollided(enemies.get(0)) || b.hasExpired())
+            for(Enemy ee: enemies)
+                if(b.hasCollided(ee)) i.remove();
+            if(b.hasExpired())
                 i.remove();
         }
     }
@@ -114,7 +110,7 @@ public class Weapon {
     }
 
     private void fireNewProjectile() {
-        bullets.add(new Bullet(a, gunTipX, gunTipY, 10, aimAngleInRad, 3.0f));
+        bullets.add(new Bullet(a, gunTipX, gunTipY, 25, aimAngleInRad, 3.0f));
     }
 
     /******************* GETTERS AND SETTERS ********************/

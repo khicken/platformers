@@ -8,7 +8,7 @@ public class Player extends Entity {
     private boolean collidingX, collidingY;
 
     private int xDir, imgFlipped; // -1 = left/up, 1 = right/down; 0 = no movement
-    private float xa, xvMultiplier, xfrict, xcap; // a = acceleration, frict = friction, cap = max speed thing can go at
+    private float xa, xvMultiplier, xcap; // a = acceleration, frict = friction, cap = max speed thing can go at
 
     private float ya, yvMultiplier, ycap;
     private int jumps, jumpMax;
@@ -17,16 +17,13 @@ public class Player extends Entity {
     private double weaponAngle;
     private Weapon weapon;
 
-    private float gravity = 9.81f;
-
     public Player(Window a, float x, float y, float w, String fileName) {
         super(a, x, y, w, ".\\..\\assets\\player\\", fileName);
 
         this.xv = 0;
         this.xa = 7.0f; // 5 m/s^2 standard, change based on terrain
         this.xvMultiplier = 1.0f; // 1 standard
-        this.xcap = 10.0f; // normally should be proportionally close to xa 
-        this.xfrict = 0.85f; // 0.85 standard, change based on terrain
+        this.xcap = 10.0f; // normally should be proportionally close to xa
 
         this.yv = 0;
         this.ya = 20.0f; // jumpHeight
@@ -71,7 +68,7 @@ public class Player extends Entity {
     private void update() {
         weaponAngle = (Math.atan2(a.getMouseX() - weapon.getWeaponX(), weapon.getWeaponY() - a.getMouseY()) - PConstants.PI/2);
 
-        yv += (gravity * a.getUniversalScalar());
+        yv += (Game.gravity * a.getUniversalScalar());
 
         if(xDir != 0) imgFlipped = xDir;
         if(a.isKeyPressed(82))
@@ -81,17 +78,15 @@ public class Player extends Entity {
     private void move() {
         // horizontal movement
         xDir = Main.booleanToInt(a.isKeyPressed(PConstants.RIGHT) || a.isKeyPressed(68)) - Main.booleanToInt(a.isKeyPressed(PConstants.LEFT) || a.isKeyPressed(65));
-        if(xDir == 0) xv *= xfrict;
+        if(xDir == 0) xv *= Game.xfrict;
         xv += xDir * xa * xvMultiplier * a.getUniversalScalar();
         xv = constrain(xv, -xcap*xvMultiplier, xcap*xvMultiplier);
 
         // having to check if the jump key is pressed once
-        if(!(a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87))) {
-            canJump = true;
-        }
+        if(!(a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87) || a.isKeyPressed(32))) canJump = true; 
 
         // vertical movement
-        if(jumps > 0 && (a.isKeyReleased(PConstants.UP) || a.isKeyReleased(87)) && canJump) {
+        if(jumps > 0 && (a.isKeyReleased(PConstants.UP) || a.isKeyReleased(87) || a.isKeyReleased(32)) && canJump) {
             canJump = false;
             jumps -= 1;
             yv = -ya * yvMultiplier;
@@ -105,7 +100,7 @@ public class Player extends Entity {
         }
     }
 
-    public void playerCollision(ArrayList<Wall> entityList) {
+    public void playerCollision(ArrayList<Wall> entityList, ArrayList<Block> blocksList) {
         collidingX = false;
         collidingY = false;
         for(Wall e: entityList) {
@@ -122,6 +117,22 @@ public class Player extends Entity {
             }
 
             if(!colliding(x, y + 1, e) && jumps == jumpMax)
+                jumps = jumpMax - 1;
+        }
+        for(Block b: blocksList) {
+            if(colliding(x + xv, y, b)) {
+                while(!colliding(x + sign(xv), y, b))
+                    x += sign(xv);
+                collidingX = true;
+            }
+
+            if(colliding(x, y + yv, b)) {
+                while(!colliding(x, y + sign(yv), b))
+                    y += sign(yv);
+                collidingY = true;
+            }
+
+            if(!colliding(x, y + 1, b) && jumps == jumpMax)
                 jumps = jumpMax - 1;
         }
         a.text(jumps, 300, 300);
@@ -150,5 +161,17 @@ public class Player extends Entity {
 
     public Weapon getPlayerWeapon() {
         return weapon;
+    }
+
+    public float getxv() {
+        return xv;
+    }
+
+    public float getyv() {
+        return yv;
+    }
+
+    public void setXPos(float eee) {
+        x = eee;
     }
 }

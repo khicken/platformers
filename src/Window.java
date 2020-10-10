@@ -6,7 +6,6 @@ import processing.video.*;
 import java.util.Arrays;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.sql.Types;
 
 public class Window extends PApplet {
     private static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
