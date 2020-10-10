@@ -1,6 +1,8 @@
 // import processing.video.Movie;
 import java.util.ArrayList;
 
+import processing.core.PConstants;
+
 public class Game {
     private Window a;
     private Player p;
@@ -16,7 +18,8 @@ public class Game {
         this.walls = new ArrayList<Wall>();
 
         enemies.add(new Enemy(a, 400, 400, 64, "enemy.png"));
-        // walls.add(new Wall(a, 0, 500, 100, "wall.png"));
+        walls.add(new Wall(a, 0, 500, 100, "wall.png"));
+        walls.add(new Wall(a, 700, 500, 100, "wall.png"));
         walls.add(new Wall(a, 0, 620, 2000, "ground.png"));
 
         // m = new Movie(a, "./assets/test.mov");
@@ -29,7 +32,7 @@ public class Game {
         // a.image(m, 0, 0);
         a.fill(0);
         a.textFont(a.createFont("Trebuchet MS", 35));
-        a.text("gayme", a.getWindowWidth()/2, a.getWindowHeight()/8);
+        a.textAlign(PConstants.CENTER);
 
         updateObjects();
 
@@ -49,7 +52,8 @@ public class Game {
     }
 
     private void drawStats() {
-        a.text("Bullets left: " + p.getPlayerWeapon().getBulletsLeft(), 400, 400);
+        a.textAlign(PConstants.RIGHT);
+        a.text(p.getPlayerWeapon().getBulletsLeft(), 1280-20, 720-50);
     }
 
     private void updateObjects() {

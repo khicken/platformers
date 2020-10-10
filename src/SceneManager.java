@@ -24,16 +24,16 @@ public class SceneManager {
     }
 
     public void initTitleScreen() {
-        titleButtons.add(new Button(a, a.getWindowWidth()/2 - 100, a.getWindowHeight()/4, 200, 50, "Play", a.color(255, 211, 92)));
-        titleButtons.add(new Button(a, a.getWindowWidth()/2 - 100, a.getWindowHeight()/4 + 60, 200, 50, "Settings", a.color(255, 211, 92)));
-        titleButtons.add(new Button(a, a.getWindowWidth()/2 - 100, a.getWindowHeight()/4 + 120, 200, 50, "Credits", a.color(255, 211, 92)));
+        titleButtons.add(new Button(a, 1280/2 - 100, 720/4, 200, 50, "Play", a.color(255, 211, 92)));
+        titleButtons.add(new Button(a, 1280/2 - 100, 720/4 + 60, 200, 50, "Settings", a.color(255, 211, 92)));
+        titleButtons.add(new Button(a, 1280/2 - 100, 720/4 + 120, 200, 50, "Credits", a.color(255, 211, 92)));
         a.getSurface().setResizable(false);
-        backButton = new Button(a, a.getWindowWidth()/2 - 75, a.getWindowHeight()/2 + 100, 150, 50, "Back", a.color(255, 211, 92));
+        backButton = new Button(a, 1280/2 - 75, 720 - 70, 150, 50, "Back", a.color(255, 211, 92));
     }
 
     public void drawTitleScreen() {
         
-        a.text("Game", a.getWindowWidth()/2, a.getWindowHeight()/6);
+        a.text("Game", 1280/2, 720/6);
 
         for(Button b: titleButtons) {
             b.draw();
@@ -49,16 +49,26 @@ public class SceneManager {
         // scrollers.get(0).draw();
     }
 
+    /**************************** SETTINGS SCREEN ****************************/
     public void initSettings() {
-        settingScrollers.add(new ArrayScroller(a, 100, 100, 250, resolutionScrollerValues));
-        settingButtons.add(new Button(a, 100, 100, 200, 50, "Apply", a.color(178)));
+        settingScrollers.add(new ArrayScroller(a, 1280/2, 250, 250, resolutionScrollerValues));
+        settingButtons.add(new Button(a, 1280/2-200/2, 720-150, 200, 50, "Apply", a.color(178)));
     }
 
-    public void drawSettings() { // note: background will not change other than blur
+    public void drawSettings() { // note to self: background will not change other than blur
+        // title
+        a.textFont(a.createFont("Trebuchet MS", 45));
+        a.textAlign(PConstants.CENTER);
+        a.fill(0);
+        a.text("Graphics Settings", 1280/2, 70);
+
+        // draw buttons/scrollers
         settingButtons.get(0).draw();
         settingScrollers.get(0).draw();
         backButton.draw();
-        if(backButton.released())
+        
+        // handle button/scroller events
+        if(backButton.released() || a.isKeyPressed(PConstants.ESC))
             a.switchScene("title");
         if(settingButtons.get(0).released()) {
             windowResolution = settingScrollers.get(0).getElement().split("x");
