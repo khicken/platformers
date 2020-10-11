@@ -47,13 +47,13 @@ public class Block extends Entity {
                 collidingY = true;
             }
         }
-        // for(Player p: players) {
-        //     if(colliding(p.getXPos() + p.getxv(), p.getYPos() + sign(p.getyv()), this)) {
-        //         while(!colliding(p.getXPos() + sign(p.getxv()), p.getYPos() + sign(p.getyv()), this))
-        //             p.setXPos(p.getXPos() + sign(p.getxv()));
-        //         playerxv = p.getxv();
-        //     }
-        // }
+        for(Player p: players) {
+            if(colliding(p.getXPos() + p.getxv(), p.getYPos() + sign(p.getyv()), this)) {
+                while(!colliding(p.getXPos() + sign(p.getxv()), p.getYPos() + sign(p.getyv()), this))
+                    p.setXPos(p.getXPos() + sign(p.getxv()));
+                playerxv = p.getxv();
+            }
+        }
     }
 
     private void updateCollision() {

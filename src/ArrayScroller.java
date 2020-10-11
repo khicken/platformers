@@ -65,10 +65,10 @@ public class ArrayScroller {
     }
 
     private boolean isHoveringLeftSide() {
-        return a.mouseX > x - w/2 && a.mouseX < x - w/2 + triangleWidth && a.mouseY > y - triangleHeight/2 && a.mouseY < y + triangleHeight/2;
+        return a.getMouseX() > x - w/2 && a.getMouseX() < x - w/2 + triangleWidth && a.getMouseY() > y - triangleHeight/2 && a.getMouseY() < y + triangleHeight/2;
     }
 
     private boolean isHoveringRightSide() {
-        return a.mouseX < x + w/2 && a.mouseX > x + w/2 - triangleWidth && a.mouseY > y - triangleHeight/2 && a.mouseY < y + triangleHeight/2;
+        return a.getMouseX() < x + w/2 && a.getMouseX() > x + w/2 - triangleWidth && a.getMouseY() > y - triangleHeight/2 && a.getMouseY() < y + triangleHeight/2;
     }
 }

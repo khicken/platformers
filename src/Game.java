@@ -10,6 +10,7 @@ public class Game {
     private ArrayList<Enemy> enemies;
     private ArrayList<Wall> walls;
     private ArrayList<Block> blocks;
+    private PlayerBar playerBar;
 
     public static float gravity = 9.81f;
     public static float xfrict = 0.85f;
@@ -25,11 +26,13 @@ public class Game {
 
         players.add(new Player(a, 500, 400, 64, "player.png"));
         enemies.add(new Enemy(a, 400, 400, 64, "enemy.png"));
-        // walls.add(new Wall(a, 0, 500, 100, "wall.png"));
-        // walls.add(new Wall(a, 700, 500, 100, "wall.png"));
+        walls.add(new Wall(a, 0, 500, 100, "wall.png"));
+        walls.add(new Wall(a, 700, 500, 100, "wall.png"));
         walls.add(new Wall(a, 0, 620, 2000, "ground.png"));
         blocks.add(new Block(a, 500, 500, 100, "block.png"));
 
+
+        playerBar = new PlayerBar(a);
         // m = new Movie(a, "./assets/test.mov");
         // m.play();
     }
@@ -69,6 +72,7 @@ public class Game {
     }
 
     private void drawStats() {
+        // playerBar.draw();
         a.textAlign(PConstants.RIGHT);
         a.text(players.get(0).getPlayerWeapon().getBulletsLeft(), 1280-20, 720-50);
     }

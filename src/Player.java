@@ -12,10 +12,13 @@ public class Player extends Entity {
 
     private float ya, yvMultiplier, ycap;
     private int jumps, jumpMax;
-    private boolean canJump;
+    private boolean canJump, canStomp, isGrounded, isStomping;
 
     private double weaponAngle;
     private Weapon weapon;
+
+    private float currentHealth, maxHealth;
+    // private PlayerBar playerBar;
 
     public Player(Window a, float x, float y, float w, String fileName) {
         super(a, x, y, w, ".\\..\\assets\\player\\", fileName);
@@ -31,7 +34,14 @@ public class Player extends Entity {
         this.yvMultiplier = 1.0f;
         this.jumpMax = 5;
         this.jumps = jumpMax;
+
         this.canJump = false;
+        this.canStomp = false;
+        this.isGrounded = false;
+        this.isStomping = false;
+
+        this.maxHealth = 20;
+        this.currentHealth = maxHealth;
 
         imgFlipped = 1;
 
@@ -57,7 +67,7 @@ public class Player extends Entity {
         if(weaponAngle < -Math.PI/2 && weaponAngle > -3 * Math.PI/2) // flips weapon(and adjusts flipped angle) if mouse is q2 & q3
             weapon.draw(x+w/2, y+h, weaponAngle, true);
         else weapon.draw(x+w/2, y+h, weaponAngle, false);
-
+        
         // reset to defaults
         a.rectMode(PConstants.CORNER);
         a.fill(0);
@@ -66,13 +76,15 @@ public class Player extends Entity {
     }
 
     private void update() {
+        // healthBar.updateStats(currentHealth, maxHealth);
+
         weaponAngle = (Math.atan2(a.getMouseX() - weapon.getWeaponX(), weapon.getWeaponY() - a.getMouseY()) - PConstants.PI/2);
 
         yv += (Game.gravity * a.getUniversalScalar());
 
         if(xDir != 0) imgFlipped = xDir;
         if(a.isKeyPressed(82))
-            weapon.reload();   
+            weapon.reload();
     }
 
     private void move() {
@@ -84,13 +96,23 @@ public class Player extends Entity {
 
         // having to check if the jump key is pressed once
         if(!(a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87) || a.isKeyPressed(32))) canJump = true; 
-
+        if(a.isKeyReleased(83) && isGrounded) canStomp = true;
+        
         // vertical movement
+        // jumping
         if(jumps > 0 && (a.isKeyReleased(PConstants.UP) || a.isKeyReleased(87) || a.isKeyReleased(32)) && canJump) {
             canJump = false;
             jumps -= 1;
             yv = -ya * yvMultiplier;
         }
+
+        // stomping
+        if(a.isKeyPressed(83) && canStomp && !isGrounded) {
+            yv = ycap/2;
+            isStomping = true;
+            canStomp = false;
+        }
+
         yv = constrain(yv, -ycap, 100);
 
         // testing
@@ -142,14 +164,16 @@ public class Player extends Entity {
         if(!collidingX)
             x += xv;
         else {
-            a.text("xahhhhh", 400, 400);
             xv = 0;
         }
         
-        if(!collidingY)
+        if(!collidingY) {
             y += yv;
-        else {
-            a.text("yahhhhh", 400, 500);
+            isGrounded = false;
+        } else {
+            isGrounded = true;
+            canStomp = true;
+            isStomping = false;
             jumps = jumpMax;
             yv = 0;
         }
@@ -158,6 +182,8 @@ public class Player extends Entity {
     public void updateEnemyList(ArrayList<Enemy> e) {
         weapon.updateEnemylist(e);
     }
+
+     /*************************** GETTERS ***************************/
 
     public Weapon getPlayerWeapon() {
         return weapon;
@@ -170,6 +196,12 @@ public class Player extends Entity {
     public float getyv() {
         return yv;
     }
+
+    public boolean isStomping() {
+        return isStomping;
+    }
+
+    /*************************** SETTERS ***************************/
 
     public void setXPos(float eee) {
         x = eee;

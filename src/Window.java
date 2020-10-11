@@ -193,10 +193,6 @@ public class Window extends PApplet {
         return keys[k];
     }
 
-    // public boolean isKeyTyped(int k) {
-    //     return typedKeys[k];
-    // }
-
     public double getMouseX() {
         return windowMouseX;
     }

@@ -55,11 +55,7 @@ public class Bullet extends Entity {
     }
 
     public boolean hasCollided(Entity e) {
-        if(colliding(x + xv, y, e))
-            while(!colliding(x, y, e)) return true;
-        if(colliding(x, y + yv, e))
-            while(!colliding(x, y, e)) return true;
-        return false;
+        return colliding(x + xv, y, e) || colliding(x, y + yv, e);
     }
 
     public boolean hasExpired() {
