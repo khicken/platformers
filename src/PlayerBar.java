@@ -5,6 +5,7 @@ public class PlayerBar {
     private Window a;
     private Player p;
     private HealthBar healthBar;
+    private XPBar xpBar;
     private PImage hpImg, xpImg, weaponImg;
 
     public PlayerBar(Window a, Player player) {
@@ -12,6 +13,7 @@ public class PlayerBar {
 
         this.p = player;
         this.healthBar = new HealthBar(a, 150, 10, 250, 35, player);
+        this.xpBar = new XPBar(a, 150, 75-(35/2), 250, 35, player);
 
         hpImg = a.loadImage(".\\..\\assets\\game\\heart.png");
         hpImg.resize(50, 50);
@@ -40,7 +42,7 @@ public class PlayerBar {
         a.fill(0);
         // weapon bullet info
         a.textAlign(PConstants.CENTER, PConstants.CENTER);
-        a.textFont(a.createFont("Trebuchet MS", 18));
+        a.textFont(a.createFont("Trebuchet MS", 15));
         if(p.getPlayerWeapon().getBulletsLeft() + p.getPlayerWeapon().getBulletsLeftInMagazine() < p.getPlayerWeapon().getMagazineCapacity())
             a.fill(100, 0, 0);
         else
@@ -54,5 +56,6 @@ public class PlayerBar {
 
         // xp
         a.image(xpImg, 100, 75-20);
+        xpBar.draw();
     }
 }

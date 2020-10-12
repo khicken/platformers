@@ -4,20 +4,17 @@ import java.lang.Math;
 import processing.core.PConstants;
 
 public class Player extends Character {
-    // private float xv, yv;
-    // private boolean collidingX, collidingY;
-
     private int xDir, imgFlipped; // -1 = left/up, 1 = right/down; 0 = no movement
     private float xa, xvMultiplier, xcap; // a = acceleration, frict = friction, cap = max speed thing can go at
 
     private float ya, yvMultiplier, ycap;
     private int jumps, jumpMax;
     private boolean canJump, canStomp, isStomping;
-    // isGrounded, 
+
     private double weaponAngle;
     private Weapon weapon;
 
-    // private PlayerBar playerBar;
+    private int xp, xpToNextLevel, lvl;
 
     public Player(Window a, float x, float y, float w, String fileName, float maxHealth) {
         super(a, x, y, w, ".\\..\\assets\\player\\", fileName, maxHealth);
@@ -40,6 +37,10 @@ public class Player extends Character {
         this.isStomping = false;
 
         imgFlipped = 1;
+
+        this.xp = 0;
+        this.xpToNextLevel = 30;
+        this.lvl = 1;
 
         this.weapon = new Weapon(a, "ak47.png", 64, 150, 0.05f, 1.0f, 50);
     }
@@ -173,6 +174,18 @@ public class Player extends Character {
 
     public boolean isStomping() {
         return isStomping;
+    }
+
+    public int getLvl() {
+        return lvl;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public int getXpToNextLevel() {
+        return xpToNextLevel;
     }
 
     /*************************** SETTERS ***************************/

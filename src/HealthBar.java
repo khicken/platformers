@@ -4,6 +4,7 @@ public class HealthBar {
     private Window a;
     private float x, y, w, h;
     private Player player;
+    private float fillRatio;
     
     public HealthBar(Window a, float x, float y, Player player) {
         this.a = a;
@@ -24,39 +25,48 @@ public class HealthBar {
     }
 
     public void draw() {
-        a.fill(255, 0, 0);
+        // color
+        a.pushMatrix();
+        a.translate(x, y);
+        a.fill(67, 250, 116);
         a.noStroke();
         a.rectMode(PConstants.CENTER);
-        a.rect(x + w/2, y + h/2, w, h, 5);
+        a.rect(w/2, h/2, w, h, 15);
 
+        // border
         a.fill(0, 0, 0, 0);
         a.stroke(0);
         a.strokeWeight(2);
-        a.rect(x + w/2, y + h/2, w, h, 5);
+        a.rect(w/2, h/2, w, h, 15);
         
+        // text
         a.fill(0);
         a.textFont(a.createFont("Trebuchet MS", h/2));
         a.textAlign(PConstants.CENTER, PConstants.CENTER);
-        a.text((int)player.getCurrentHealth() + " / " + (int)player.getMaxHealth(), x + w/2, y + h/2);
+        a.text((int)player.getCurrentHealth() + " / " + (int)player.getMaxHealth(), w/2, h/2);
 
         a.noStroke();
+        a.popMatrix();
     }
 
     public void draw(float x, float y) {
+        // color
         a.pushMatrix();
         a.translate(x, y);
-        a.fill(255, 0, 0);
+        a.fill(67, 250, 116);
         a.noStroke();
         a.rectMode(PConstants.CENTER);
-        a.rect(w/2, h/2, w, h, 5);
+        a.rect(w/2, h/2, w, h, 15);
 
+        // border
         a.fill(0, 0, 0, 0);
         a.stroke(0);
         a.strokeWeight(2);
-        a.rect(w/2, h/2, w, h, 5);
+        a.rect(w/2, h/2, w, h, 15);
         
+        // text
         a.fill(0);
-        a.textFont(a.createFont("Trebuchet MS", h/5));
+        a.textFont(a.createFont("Trebuchet MS", h/2));
         a.textAlign(PConstants.CENTER, PConstants.CENTER);
         a.text((int)player.getCurrentHealth() + " / " + (int)player.getMaxHealth(), w/2, h/2);
 
