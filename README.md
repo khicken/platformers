@@ -1,2 +1,2 @@
 # jakes-adventure
-A 2D shooter game with action, adventure, and stupidity in Java
+A 2D platformer fighting RPG with action, adventure, and stupidity via Java
