@@ -34,8 +34,8 @@ public class Bullet extends Entity {
         a.pushMatrix();
         a.translate(x, y);
         a.rotate((float)(angle));
-        // a.fill(255, 240, 28);
-        a.fill(0);
+        a.fill(255, 240, 28);
+        // a.fill(0);
         a.rect(0, 0, 12, 6, 3);
         a.popMatrix();
 

@@ -3,25 +3,24 @@ import java.lang.Math;
 
 import processing.core.PConstants;
 
-public class Player extends Entity {
-    private float xv, yv;
-    private boolean collidingX, collidingY;
+public class Player extends Character {
+    // private float xv, yv;
+    // private boolean collidingX, collidingY;
 
     private int xDir, imgFlipped; // -1 = left/up, 1 = right/down; 0 = no movement
     private float xa, xvMultiplier, xcap; // a = acceleration, frict = friction, cap = max speed thing can go at
 
     private float ya, yvMultiplier, ycap;
     private int jumps, jumpMax;
-    private boolean canJump, canStomp, isGrounded, isStomping;
-
+    private boolean canJump, canStomp, isStomping;
+    // isGrounded, 
     private double weaponAngle;
     private Weapon weapon;
 
-    private float currentHealth, maxHealth;
     // private PlayerBar playerBar;
 
-    public Player(Window a, float x, float y, float w, String fileName) {
-        super(a, x, y, w, ".\\..\\assets\\player\\", fileName);
+    public Player(Window a, float x, float y, float w, String fileName, float maxHealth) {
+        super(a, x, y, w, ".\\..\\assets\\player\\", fileName, maxHealth);
 
         this.xv = 0;
         this.xa = 7.0f; // 5 m/s^2 standard, change based on terrain
@@ -40,18 +39,15 @@ public class Player extends Entity {
         this.isGrounded = false;
         this.isStomping = false;
 
-        this.maxHealth = 20;
-        this.currentHealth = maxHealth;
-
         imgFlipped = 1;
 
-        this.weapon = new Weapon(a, "ak47.png", 64, 0.1f, 1.0f, 50);
+        this.weapon = new Weapon(a, "ak47.png", 64, 150, 0.05f, 1.0f, 50);
     }
 
     @Override 
     public void draw() {
         updateMoveAbility();
-        update(); // call variable updates
+        update();
 
         // player
         a.imageMode(PConstants.CENTER);
@@ -75,14 +71,14 @@ public class Player extends Entity {
         move(); // fetch input to move player
     }
 
-    private void update() {
-        // healthBar.updateStats(currentHealth, maxHealth);
+    @Override
+    protected void update() {
+        super.update();
 
         weaponAngle = (Math.atan2(a.getMouseX() - weapon.getWeaponX(), weapon.getWeaponY() - a.getMouseY()) - PConstants.PI/2);
 
-        yv += (Game.gravity * a.getUniversalScalar());
+        if(xDir != 0) imgFlipped = xDir; // flip image when player is not standing still
 
-        if(xDir != 0) imgFlipped = xDir;
         if(a.isKeyPressed(82))
             weapon.reload();
     }
@@ -94,13 +90,13 @@ public class Player extends Entity {
         xv += xDir * xa * xvMultiplier * a.getUniversalScalar();
         xv = constrain(xv, -xcap*xvMultiplier, xcap*xvMultiplier);
 
-        // having to check if the jump key is pressed once
-        if(!(a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87) || a.isKeyPressed(32))) canJump = true; 
+        // having to check if the jump key is pressed once, along with being able to hold down stomp key and still jump
+        if(!(a.isKeyPressed(PConstants.UP) || a.isKeyPressed(87) || a.isKeyPressed(32))) canJump = true;
         if(a.isKeyReleased(83) && isGrounded) canStomp = true;
         
         // vertical movement
         // jumping
-        if(jumps > 0 && (a.isKeyReleased(PConstants.UP) || a.isKeyReleased(87) || a.isKeyReleased(32)) && canJump) {
+        if(jumps > 0 && !isStomping && (a.isKeyReleased(PConstants.UP) || a.isKeyReleased(87) || a.isKeyReleased(32)) && canJump) {
             canJump = false;
             jumps -= 1;
             yv = -ya * yvMultiplier;
@@ -122,45 +118,23 @@ public class Player extends Entity {
         }
     }
 
-    public void playerCollision(ArrayList<Wall> entityList, ArrayList<Block> blocksList) {
-        collidingX = false;
-        collidingY = false;
+    @Override
+    public void updateCollision(ArrayList<Wall> entityList, ArrayList<Block> blocksList) {
+        super.updateCollision(entityList, blocksList);
+
         for(Wall e: entityList) {
-            if(colliding(x + xv, y, e)) {
-                while(!colliding(x + sign(xv), y, e))
-                    x += sign(xv);
-                collidingX = true;
-            }
-
-            if(colliding(x, y + yv, e)) {
-                while(!colliding(x, y + sign(yv), e))
-                    y += sign(yv);
-                collidingY = true;
-            }
-
             if(!colliding(x, y + 1, e) && jumps == jumpMax)
                 jumps = jumpMax - 1;
         }
         for(Block b: blocksList) {
-            if(colliding(x + xv, y, b)) {
-                while(!colliding(x + sign(xv), y, b))
-                    x += sign(xv);
-                collidingX = true;
-            }
-
-            if(colliding(x, y + yv, b)) {
-                while(!colliding(x, y + sign(yv), b))
-                    y += sign(yv);
-                collidingY = true;
-            }
-
             if(!colliding(x, y + 1, b) && jumps == jumpMax)
                 jumps = jumpMax - 1;
         }
         a.text(jumps, 300, 300);
     }
 
-    private void updateMoveAbility() {
+    @Override
+    protected void updateMoveAbility() {
         if(!collidingX)
             x += xv;
         else {

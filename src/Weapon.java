@@ -2,13 +2,12 @@ import java.util.Iterator;
 import java.util.ArrayList;
 import java.lang.Math;
 
-import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
 
 public class Weapon {
     private Window a;
-    PImage img;
+    private PImage img;
     private float x, y, w, h;
     private float k; // amount to scale image to
 
@@ -23,11 +22,21 @@ public class Weapon {
     private long lastTimeShot;
 
     private float reloadTime;
-    private int magazineCapacity, bulletsLeftInMagazine;
+    private int magazineCapacity, bulletsLeftInMagazine, totalBulletsLeft;
     private long startReloadingTime;
     private boolean reloading;
     
-    public Weapon(Window a, String imgName, float w, float fireRate, float reloadTime, int magazineCapacity) {
+    /**
+     * Creates a new semi-automatic gun
+     * @param a window to pass gun to
+     * @param imgName name of gun file in gun folder
+     * @param w how long the gun will be (height will be scaled propotionally)
+     * @param bullets bullets gun starts with
+     * @param fireRate how fast gun fires bullets (in s)
+     * @param reloadTime reload time (in s)
+     * @param magazineCapacity how many bullets each magazine can have
+     */
+    public Weapon(Window a, String imgName, float w, int bullets, float fireRate, float reloadTime, int magazineCapacity) {
         this.a = a;
         this.x = 0;
         this.y = 0;
@@ -40,6 +49,7 @@ public class Weapon {
         this.reloadTime = reloadTime;
         this.magazineCapacity = magazineCapacity;
         this.bulletsLeftInMagazine = magazineCapacity;
+        this.totalBulletsLeft = bullets;
 
         this.img = a.loadImage(".\\..\\assets\\weapons\\" + imgName);
 
@@ -92,15 +102,21 @@ public class Weapon {
     }
 
     public void reload() {
-        if(bulletsLeftInMagazine == magazineCapacity || reloading) return;
+        if(bulletsLeftInMagazine == magazineCapacity || reloading || totalBulletsLeft == 0) return;
         startReloadingTime = System.currentTimeMillis();
         reloading = true; // set reloading status to true so the reloading wont reset when called again
     }
 
     private void checkForReload() {
         if(bulletsLeftInMagazine == 0) reload(); // autoreload
-        if(reloading && System.currentTimeMillis() - startReloadingTime >= reloadTime*1000) {
-            bulletsLeftInMagazine = magazineCapacity;
+        if(reloading && System.currentTimeMillis() - startReloadingTime >= reloadTime*1000) { // called the moment when reloading finished
+            if(totalBulletsLeft + bulletsLeftInMagazine < magazineCapacity) {
+                bulletsLeftInMagazine += totalBulletsLeft;
+                totalBulletsLeft = 0;
+            } else {
+                totalBulletsLeft -= magazineCapacity - bulletsLeftInMagazine;
+                bulletsLeftInMagazine = magazineCapacity;
+            }
             reloading = false;
         }
     }
@@ -122,11 +138,19 @@ public class Weapon {
         return y;
     }
 
-    public int getBulletsLeft() {
+    public int getBulletsLeftInMagazine() {
         return bulletsLeftInMagazine;
     }
 
     public int getMagazineCapacity() {
         return magazineCapacity;
+    }
+
+    public int getBulletsLeft() {
+        return totalBulletsLeft;
+    }
+
+    public PImage getSprite() {
+        return img;
     }
 }

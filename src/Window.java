@@ -177,7 +177,6 @@ public class Window extends PApplet {
         WINDOW_HEIGHT = height;
         WINDOW_RATIO_WIDTH = (float)width/1280.0f;
         WINDOW_RATIO_HEIGHT = (float)height/720.0f;
-        System.out.println(WINDOW_RATIO_HEIGHT + ", " + WINDOW_RATIO_HEIGHT);
         surface.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
