@@ -28,7 +28,7 @@ public class Player extends Character {
         this.ya = 20.0f; // jumpHeight
         this.ycap = 50.0f; // terminal velocity pretty much
         this.yvMultiplier = 1.0f;
-        this.jumpMax = 5;
+        this.jumpMax = 2; // only double jump
         this.jumps = jumpMax;
 
         this.canJump = false;
@@ -131,7 +131,6 @@ public class Player extends Character {
             if(!colliding(x, y + 1, b) && jumps == jumpMax)
                 jumps = jumpMax - 1;
         }
-        a.text(jumps, 300, 300);
     }
 
     @Override

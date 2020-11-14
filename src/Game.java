@@ -25,7 +25,7 @@ public class Game {
     public Game(Window a) {
         this.a = a;
 
-        this.bg = new Background(a, 0, 0, 2000, "bg.jpg");
+        this.bg = new Background(a, 0, 0, 2000, "bg.png");
 
         // init entity lists
         this.players = new ArrayList<Player>();

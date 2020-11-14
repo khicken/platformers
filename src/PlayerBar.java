@@ -47,7 +47,7 @@ public class PlayerBar {
             a.fill(100, 0, 0);
         else
             a.fill(0);
-        a.text(p.getPlayerWeapon().getBulletsLeftInMagazine() + "|" + p.getPlayerWeapon().getBulletsLeft(), 52.5f, 90.0f);
+        a.text(p.getPlayerWeapon().getBulletsLeftInMagazine() + "|" + p.getPlayerWeapon().getBulletsLeft(), 52.5f, 88.0f);
         
         // hp
         a.imageMode(PConstants.CORNER);

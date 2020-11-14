@@ -81,9 +81,6 @@ public class Weapon {
         a.image(img, 0, 0);
         a.popMatrix();
 
-        a.text(bullets.size(), 30, 30);
-
-
         checkForReload();
         if(a.isMousePressed() && (System.nanoTime() - lastTimeShot) > fireRate*1000000000 && bulletsLeftInMagazine != 0 && !reloading) { // hold to fire
             lastTimeShot = System.nanoTime();
