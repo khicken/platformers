@@ -1,6 +1,8 @@
 import processing.core.PConstants;
 import processing.core.PImage;
 
+// displays stats in the game screen of playerdata
+
 public class PlayerBar {
     private Window a;
     private Player p;
@@ -10,14 +12,14 @@ public class PlayerBar {
 
     public PlayerBar(Window a, Player player) {
         this.a = a;
-
         this.p = player;
-        this.healthBar = new HealthBar(a, 150, 10, 250, 35, player);
-        this.xpBar = new XPBar(a, 150, 75-(35/2), 250, 35, player);
+        
+        healthBar = new HealthBar(a, 150, 10, 250, 35, player);
+        xpBar = new XPBar(a, 150, 75-(35/2), 250, 35, player);
 
-        hpImg = a.loadImage(".\\..\\assets\\game\\heart.png");
+        hpImg = a.loadImage(System.getProperty("user.dir") + "/assets/game/heart.png");
         hpImg.resize(50, 50);
-        xpImg = a.loadImage(".\\..\\assets\\game\\xp.png");
+        xpImg = a.loadImage(System.getProperty("user.dir") + "/assets/game/xp.png");
         xpImg.resize(50, 50);
         weaponImg = player.getPlayerWeapon().getSprite();
         float k = weaponImg.width/60;

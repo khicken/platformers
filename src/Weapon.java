@@ -18,7 +18,7 @@ public class Weapon {
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
-    private float fireRate;
+    private float fireRate, bulletDmg;
     private long lastTimeShot;
 
     private float reloadTime;
@@ -33,10 +33,11 @@ public class Weapon {
      * @param w how long the gun will be (height will be scaled propotionally)
      * @param bullets bullets gun starts with
      * @param fireRate how fast gun fires bullets (in s)
+     * @param bulletDmg how much damage does each bullet do
      * @param reloadTime reload time (in s)
      * @param magazineCapacity how many bullets each magazine can have
      */
-    public Weapon(Window a, String imgName, float w, int bullets, float fireRate, float reloadTime, int magazineCapacity) {
+    public Weapon(Window a, String imgName, float w, int bullets, float fireRate, float bulletDmg, float reloadTime, int magazineCapacity) {
         this.a = a;
         this.x = 0;
         this.y = 0;
@@ -44,6 +45,7 @@ public class Weapon {
         this.h = 0;
 
         this.fireRate = fireRate;
+        this.bulletDmg = bulletDmg;
         this.lastTimeShot = 0;
 
         this.reloadTime = reloadTime;
@@ -51,7 +53,7 @@ public class Weapon {
         this.bulletsLeftInMagazine = magazineCapacity;
         this.totalBulletsLeft = bullets;
 
-        this.img = a.loadImage(".\\..\\assets\\weapons\\" + imgName);
+        this.img = a.loadImage(System.getProperty("user.dir") + "/assets/weapons/" + imgName);
 
         k = img.width/w;
         h = img.height/k;
@@ -91,8 +93,12 @@ public class Weapon {
         for(Iterator<Bullet> i = bullets.iterator(); i.hasNext();) {
             Bullet b = i.next();
             b.draw();
-            for(Enemy ee: enemies)
-                if(b.hasCollided(ee)) i.remove();
+            for(Enemy ee: enemies) {
+                if(b.hasCollided(ee)) {
+                    i.remove();
+                    ee.damage(bulletDmg);
+                }
+            }
             if(b.hasExpired())
                 i.remove();
         }

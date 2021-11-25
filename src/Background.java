@@ -11,7 +11,7 @@ public class Background {
         this.x = x;
         this.y = y;
         
-        img = a.loadImage(".\\..\\assets\\bg\\" + fileName);
+        img = a.loadImage(System.getProperty("user.dir") + "/assets/bg/" + fileName);
         float k = (float)img.width/w;
         img.resize((int)w, (int)(img.height/k));
     }

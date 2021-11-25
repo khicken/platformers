@@ -1,13 +1,15 @@
 import processing.core.PConstants;
 import java.util.ArrayList;
 
+// NOTE: CURRENTLY BROKEN, NOT PLANNING ON ADDING IN PUSHABLE BLOCKS
+
 public class Block extends Entity {
     private float xv, yv;
     private boolean collidingX, collidingY;
     private float playerxv, playeryv;
 
     public Block(Window a, float x, float y, float w, String fileName) {
-        super(a, x, y, w, ".\\..\\assets\\tiles\\", fileName);
+        super(a, x, y, w, System.getProperty("user.dir") + "/assets/tiles/", fileName);
         this.xv = 0;
         this.yv = 0;
     }
@@ -47,13 +49,13 @@ public class Block extends Entity {
                 collidingY = true;
             }
         }
-        // for(Player p: players) {
-        //     if(colliding(p.getXPos() + p.getxv(), p.getYPos() + sign(p.getyv()), this)) {
-        //         while(!colliding(p.getXPos() + sign(p.getxv()), p.getYPos() + sign(p.getyv()), this))
-        //             p.setXPos(p.getXPos() + sign(p.getxv()));
-        //         playerxv = p.getxv();
-        //     }
-        // }
+        for(Player p: players) {
+            if(colliding(p.getXPos() + sign(p.getxv()), p.getYPos() + sign(p.getyv()), this)) {
+                while(!colliding(p.getXPos() + sign(p.getxv()), p.getYPos() + sign(p.getyv()), this))
+                    p.setXPos(p.getXPos() + sign(p.getxv()));
+                playerxv = p.getxv();
+            }
+        }
     }
 
     private void updateCollision() {

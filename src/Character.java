@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Character extends Entity {
     protected float xv, yv;
     protected float currentHealth, maxHealth;
+    protected boolean isDead;
 
     protected boolean collidingX, collidingY;
     protected boolean isGrounded;

@@ -35,11 +35,10 @@ public class Game {
 
         // create entities
         players.add(new Player(a, 500, 400, 64, "player.png", 20.0f));
-        enemies.add(new Enemy(a, 400, 400, 64, "enemy.png", 20.0f));
-        // walls.add(new Wall(a, 0, 500, 100, "wall.png"));
-        // walls.add(new Wall(a, 700, 500, 100, "wall.png"));
+        enemies.add(new Enemy(a, 300, 100, 64, "enemy.png", 20.0f));
+        walls.add(new Wall(a, 0, 500, 100, "wall.png"));
+        walls.add(new Wall(a, 700, 500, 100, "wall.png"));
         walls.add(new Wall(a, 0, 620, 2000, "ground.png"));
-        blocks.add(new Block(a, 500, 500, 100, "block.png"));
 
 
         playerBar = new PlayerBar(a, players.get(0));
