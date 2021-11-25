@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Enemy extends Character {
     private HealthBar healthBar;
     public Enemy(Window a, float x, float y, float w, String fileName, float maxHealth) {
@@ -15,8 +17,9 @@ public class Enemy extends Character {
 
     public void damage(float val) {
         currentHealth -= val;
-        System.out.println(currentHealth);
         currentHealth = constrain(currentHealth, 0, maxHealth);
-        System.out.println(currentHealth);
+
+        if(currentHealth == 0)
+            isDead = false;
     }
 }
