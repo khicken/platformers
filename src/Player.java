@@ -120,15 +120,15 @@ public class Player extends Character {
     }
 
     @Override
-    public void updateCollision(ArrayList<Wall> entityList, ArrayList<Block> blocksList) {
-        super.updateCollision(entityList, blocksList);
+    public void updateCollision(ArrayList<Wall> tileList, ArrayList<Block> blocksList) {
+        super.updateCollision(tileList, blocksList);
 
-        for(Wall e: entityList) {
-            if(!colliding(x, y + 1, e) && jumps == jumpMax)
+        for(Wall e: tileList) { // reset jumps when colliding with wall or block
+            if(!colliding(x, y + yv, e) && jumps == jumpMax)
                 jumps = jumpMax - 1;
         }
         for(Block b: blocksList) {
-            if(!colliding(x, y + 1, b) && jumps == jumpMax)
+            if(!colliding(x, y + yv, b) && jumps == jumpMax)
                 jumps = jumpMax - 1;
         }
     }
@@ -153,11 +153,23 @@ public class Player extends Character {
         }
     }
 
+    public void updateEnemyCollision(ArrayList<Enemy> enemyList) {
+        for(Enemy e: enemyList) {
+            if(colliding(x + xv, y, e)) {
+                currentHealth -= e.getDamage();
+                xv = -xv * 0.8f;
+            } else if(colliding(x, y + yv, e)) {
+                currentHealth -= e.getDamage();
+                yv = -yv * 0.8f;
+            }
+        }
+    }
+
     public void updateEnemyList(ArrayList<Enemy> e) {
         weapon.updateEnemylist(e);
     }
 
-     /*************************** GETTERS ***************************/
+    /*************************** GETTERS ***************************/
 
     public Weapon getPlayerWeapon() {
         return weapon;
@@ -185,6 +197,10 @@ public class Player extends Character {
 
     public int getXpToNextLevel() {
         return xpToNextLevel;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 
     /*************************** SETTERS ***************************/

@@ -1,6 +1,7 @@
 import java.util.Calendar;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.video.*;
 
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.awt.Toolkit;
 public class Window extends PApplet {
     private static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
     private static float WINDOW_RATIO_WIDTH = 1.0f, WINDOW_RATIO_HEIGHT = 1.0f;
+    
     private Dimension screenSize;
 
     private boolean mouseIsPressed, mouseIsReleased, mouseIsClicked;
@@ -51,8 +53,13 @@ public class Window extends PApplet {
         sm.initTitleScreen();
         sm.initSettings();
         sm.initGame();
+
+        cursor(PConstants.ARROW);
     }
 
+    /***
+     * This boi is in charge of switching scenes of the entire window around
+     */
 	public void draw() {
         beginRender();
         
@@ -69,6 +76,12 @@ public class Window extends PApplet {
             case "game":
                 sm.drawGame();
             break;
+            case "death":
+                sm.drawDeathScreen();
+            break;
+            case "credits":
+                sm.drawCredits();
+            break;
         }
         popMatrix();
 
@@ -79,7 +92,6 @@ public class Window extends PApplet {
     /******************* RENDERING FUNCTIONS ********************/
     private void beginRender() {
         background(255); // flush background
-        cursor(ARROW);
 
         windowMouseX = mouseX / WINDOW_RATIO_WIDTH;
         windowMouseY = mouseY / WINDOW_RATIO_HEIGHT;
@@ -92,7 +104,7 @@ public class Window extends PApplet {
     }
 
     private void endRender() {
-        // rip
+        cursor(PConstants.ARROW);
     }
 
     private void pollEvents() {

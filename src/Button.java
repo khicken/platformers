@@ -20,6 +20,7 @@ public class Button {
         a.strokeWeight(2);
         a.stroke(0);
         a.fill(color);
+        a.rectMode(PConstants.CORNER);
         a.rect(this.x, this.y, this.w, this.h, 5);
 
         // draw transparent rectangle to make it look like the buttons being darkened

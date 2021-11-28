@@ -17,6 +17,7 @@ public class Character extends Entity {
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
         this.isGrounded = false;
+        this.isDead = false;
     }
 
     @Override
@@ -29,12 +30,15 @@ public class Character extends Entity {
 
     protected void update() {
         yv += (Game.gravity * a.getUniversalScalar());
+
+        if(currentHealth <= 0)
+            isDead = true;
     }
 
-    protected void updateCollision(ArrayList<Wall> entityList, ArrayList<Block> blocksList) {
+    protected void updateCollision(ArrayList<Wall> tileList, ArrayList<Block> blocksList) {
         collidingX = false;
         collidingY = false;
-        for(Wall e: entityList) {
+        for(Wall e: tileList) {
             if(colliding(x + xv, y, e)) {
                 while(!colliding(x + sign(xv), y, e))
                     x += sign(xv);

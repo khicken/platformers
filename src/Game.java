@@ -35,11 +35,10 @@ public class Game {
 
         // create entities
         players.add(new Player(a, 500, 400, 64, "player.png", 20.0f));
-        enemies.add(new Enemy(a, 300, 100, 64, "enemy.png", 20.0f));
+        enemies.add(new Enemy(a, 300, 100, 64, "enemy.png", 20.0f, 1.0f));
         walls.add(new Wall(a, 0, 500, 100, "wall.png"));
         walls.add(new Wall(a, 700, 500, 100, "wall.png"));
         walls.add(new Wall(a, 0, 620, 2000, "ground.png"));
-
 
         playerBar = new PlayerBar(a, players.get(0));
         // m = new Movie(a, "./assets/test.mov");
@@ -56,15 +55,17 @@ public class Game {
 
         drawObjects();
         drawStats();
+        updateWorld();
 
         a.fill(0);
-        a.text(a.mouseX + ", " + a.mouseY, a.mouseX + 10, a.mouseY + 10);
+        a.text(Math.round(a.getMouseX()) + ", " + Math.round(a.getMouseY()), (float)Math.round(a.getMouseX()) + 10, (float)Math.round(a.getMouseY()) + 10);
     }
 
     private void drawObjects() {
         for(Player p: players) {
             p.draw();
             p.updateCollision(walls, blocks);
+            p.updateEnemyCollision(enemies);
             p.updateEnemyList(enemies);
         }
         for(Enemy en: enemies) {
@@ -80,7 +81,23 @@ public class Game {
         }
     }
 
+    private void updateWorld() {
+        int i = 0;
+        while(i < enemies.size()) {
+            if(enemies.get(i).isDead()) {
+                enemies.remove(i);
+                continue;
+            }
+
+            i++;
+        }
+    }
+
     private void drawStats() {
         playerBar.draw();
+    }
+
+    public boolean showDeathScreen() {
+        return players.get(0).isDead();
     }
 }

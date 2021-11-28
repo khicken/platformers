@@ -32,21 +32,17 @@ public class SceneManager {
     }
 
     public void drawTitleScreen() {
-        
-        a.text("Game", 1280/2, 720/6);
+        a.text("Jake's Adventure", 1280/2, 720/6);
 
-        for(Button b: titleButtons) {
+        for(Button b: titleButtons)
             b.draw();
-        }
 
-        if(titleButtons.get(0).released()) {
+        if(titleButtons.get(0).released())
             a.switchScene("game");
-        }
-        if(titleButtons.get(1).released()) {
+        if(titleButtons.get(1).released())
             a.switchScene("settings");
-        }
-
-        // scrollers.get(0).draw();
+        if(titleButtons.get(2).released())
+            a.switchScene("credits");
     }
 
     /**************************** SETTINGS SCREEN ****************************/
@@ -83,6 +79,30 @@ public class SceneManager {
 
     public void drawGame() {
         g.draw();
-        if(a.isKeyPressed(PConstants.ESC)) a.switchScene("title");
+        if(a.isKeyPressed(PConstants.ESC))
+            a.switchScene("title");
+        if(g.showDeathScreen())
+            a.switchScene("death");
+    }
+
+    public void drawDeathScreen() {
+        a.textFont(a.createFont("Comic Sans MS", 69));
+        a.textAlign(PConstants.CENTER);
+        a.fill(0);
+        a.text("you died lol", 1280/2, 720/2);
+    }
+
+    public void drawCredits() {
+        a.textFont(a.createFont("Trebuchet MS", 48));
+        a.textAlign(PConstants.CENTER);
+        a.fill(0);
+        a.text("Jake's Adventure", 1280/2, 720/4-35);
+        a.textSize(28);
+        a.text("Programmed, designed, and bashed by Kaleb K.", 1280/2, 720/4+30);
+
+        // back button
+        backButton.draw();
+        if(backButton.released() || a.isKeyPressed(PConstants.ESC))
+            a.switchScene("title");
     }
 }

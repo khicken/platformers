@@ -96,7 +96,7 @@ public class Weapon {
             for(Enemy ee: enemies) {
                 if(b.hasCollided(ee)) {
                     i.remove();
-                    ee.damage(bulletDmg);
+                    ee.takeDamage(bulletDmg);
                 }
             }
             if(b.hasExpired())
