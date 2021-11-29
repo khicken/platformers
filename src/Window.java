@@ -64,7 +64,7 @@ public class Window extends PApplet {
         beginRender();
         
         pushMatrix();
-        // translate()
+        // translate() <- what is this for?
         scale(WINDOW_RATIO_WIDTH, WINDOW_RATIO_HEIGHT);
         switch(scene) {
             case "title":
