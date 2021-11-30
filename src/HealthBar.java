@@ -54,7 +54,7 @@ public class HealthBar {
      * @param y
      */
     public void draw(float x, float y) {
-        // color
+        // color/
         a.pushMatrix();
         a.translate(x, y);
         a.noStroke();
