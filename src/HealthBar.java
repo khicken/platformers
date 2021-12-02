@@ -51,7 +51,7 @@ public class HealthBar {
     /***
      * Draws a mini health bar over the character
      * @param x
-     * @param y
+     * @param y//
      */
     public void draw(float x, float y) {
         // color/
