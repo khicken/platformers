@@ -51,20 +51,35 @@ public class HealthBar {
     /***
      * Draws a mini health bar over the character
      * @param x
-     * @param y//
+     * @param y
      */
     public void draw(float x, float y) {
-        // color/
+        int transparency = 0; // for animation fade purposes
+        if(ch.getCurrentHealth() != ch.getMaxHealth() || mouseInBounds(x, y, ch.getWidth(), ch.getHeight())) {
+            if(transparency <= 255)
+                transparency += 25;
+            else
+                transparency = 255;
+        } else {
+            transparency = 0;
+        }
+
+        // color
         a.pushMatrix();
         a.translate(x, y);
         a.noStroke();
         a.rectMode(PConstants.CORNER);
-        a.fill(255, 0, 0);
+        a.fill(transparency, 0, 0);
         a.rect(-20, -5, 40, 10, 3);
-        a.fill(67, 250, 116);
+        a.fill(67, 250, 116); // will need to implement transparency with this too
         a.rect(-20, -5, 40*ch.getCurrentHealth()/ch.getMaxHealth(), 10, 3);
 
         a.noStroke();
         a.popMatrix();
+    }
+
+    // mini helper function
+    private boolean mouseInBounds(float x, float y, float w, float h) {
+        return a.getMouseX() >= x && a.getMouseX() <= x + w && a.getMouseY() > y && a.getMouseY() <= y + h;
     }
 }
