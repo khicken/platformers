@@ -71,7 +71,7 @@ public class HealthBar {
         a.rectMode(PConstants.CORNER);
         a.fill(transparency, 0, 0);
         a.rect(-20, -5, 40, 10, 3);
-        a.fill(67, 250, 116); // will need to implement transparency with this too
+        a.fill(67*transparency/255, 250*transparency/255, 116*transparency/255);
         a.rect(-20, -5, 40*ch.getCurrentHealth()/ch.getMaxHealth(), 10, 3);
 
         a.noStroke();
