@@ -60,7 +60,7 @@ public class Entity {
     /***
      * Uses a rectangle mask to check for collision
      * @param e Instance to check collision for
-     * @return True if NOT colliding, false if colliding (confusing yes I know)
+     * @return True if  colliding, false if not colliding
      */
     public boolean colliding(Entity e) {
         return this.x <= e.getXPos() + e.getWidth() && this.x + this.w >= e.getXPos() && (this.y <= e.getYPos() + e.getHeight() && this.y + this.h >= e.getYPos());
@@ -71,7 +71,7 @@ public class Entity {
      * @param x Instance's x pos
      * @param y Instance's y pos
      * @param e Other instance to check collision for
-     * @return True if NOT colliding, false if colliding (confusing yes I know)
+     * @return True if colliding, false if not colliding
      */
     public boolean colliding(float x, float y, Entity e) {
         return x <= e.getXPos() + e.getWidth() && x + this.w >= e.getXPos() && (y <= e.getYPos() + e.getHeight() && y + this.h >= e.getYPos());
