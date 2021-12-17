@@ -32,7 +32,7 @@ public class SceneManager {
     }
 
     public void drawTitleScreen() {
-        a.text("Jake's Adventure", 1280/2, 720/6);
+        a.text("Jake's Adventure (outdated)", 1280/2, 720/6);
 
         for(Button b: titleButtons)
             b.draw();
