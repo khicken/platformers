@@ -1,0 +1,101 @@
+[gd_scene load_steps=46 format=2]
+
+[ext_resource path="res://assets/player/run/player-run (1).png" type="Texture" id=1]
+[ext_resource path="res://assets/player/run/player-run (12).png" type="Texture" id=2]
+[ext_resource path="res://assets/weapons/rifle.png" type="Texture" id=3]
+[ext_resource path="res://assets/player/run/player-run (3).png" type="Texture" id=4]
+[ext_resource path="res://assets/player/run/player-run (4).png" type="Texture" id=5]
+[ext_resource path="res://scripts/Weapon.gd" type="Script" id=6]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=7]
+[ext_resource path="res://assets/player/run/player-run (5).png" type="Texture" id=8]
+[ext_resource path="res://assets/player/run/player-run (7).png" type="Texture" id=9]
+[ext_resource path="res://assets/player/run/player-run (8).png" type="Texture" id=10]
+[ext_resource path="res://assets/player/run/player-run (10).png" type="Texture" id=11]
+[ext_resource path="res://assets/player/run/player-run (11).png" type="Texture" id=12]
+[ext_resource path="res://assets/player/run/player-run (13).png" type="Texture" id=13]
+[ext_resource path="res://assets/player/run/player-run (9).png" type="Texture" id=14]
+[ext_resource path="res://assets/player/run/player-run (14).png" type="Texture" id=15]
+[ext_resource path="res://assets/player/run/player-run (2).png" type="Texture" id=16]
+[ext_resource path="res://assets/player/run/player-run (6).png" type="Texture" id=17]
+[ext_resource path="res://assets/player/idle/player-idle (5).png" type="Texture" id=18]
+[ext_resource path="res://assets/player/idle/player-idle (10).png" type="Texture" id=19]
+[ext_resource path="res://assets/player/idle/player-idle (15).png" type="Texture" id=20]
+[ext_resource path="res://assets/player/run/player-run (19).png" type="Texture" id=21]
+[ext_resource path="res://assets/player/idle/player-idle (11).png" type="Texture" id=22]
+[ext_resource path="res://assets/player/idle/player-idle (2).png" type="Texture" id=23]
+[ext_resource path="res://assets/player/idle/player-idle (8).png" type="Texture" id=24]
+[ext_resource path="res://assets/player/idle/player-idle (14).png" type="Texture" id=25]
+[ext_resource path="res://assets/player/idle/player-idle (6).png" type="Texture" id=26]
+[ext_resource path="res://assets/player/run/player-run (17).png" type="Texture" id=27]
+[ext_resource path="res://assets/player/idle/player-idle (12).png" type="Texture" id=28]
+[ext_resource path="res://assets/player/idle/player-idle (9).png" type="Texture" id=29]
+[ext_resource path="res://assets/player/run/player-run (18).png" type="Texture" id=30]
+[ext_resource path="res://assets/player/idle/player-idle (16).png" type="Texture" id=31]
+[ext_resource path="res://assets/player/idle/player-idle (3).png" type="Texture" id=32]
+[ext_resource path="res://assets/player/idle/player-idle (1).png" type="Texture" id=33]
+[ext_resource path="res://assets/player/idle/player-idle (4).png" type="Texture" id=34]
+[ext_resource path="res://assets/player/idle/player-idle (7).png" type="Texture" id=35]
+[ext_resource path="res://assets/player/jump/player-jump.png" type="Texture" id=36]
+[ext_resource path="res://assets/player/idle/player-idle (13).png" type="Texture" id=37]
+[ext_resource path="res://assets/player/run/player-run (16).png" type="Texture" id=38]
+[ext_resource path="res://assets/player/run/player-run (20).png" type="Texture" id=39]
+[ext_resource path="res://assets/player/fall/player-fall.png" type="Texture" id=40]
+[ext_resource path="res://assets/player/run/player-run (15).png" type="Texture" id=41]
+[ext_resource path="res://shaders/dropshadow.shader" type="Shader" id=42]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 30.5, 74.5 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 33 ), ExtResource( 23 ), ExtResource( 32 ), ExtResource( 34 ), ExtResource( 18 ), ExtResource( 26 ), ExtResource( 35 ), ExtResource( 24 ), ExtResource( 29 ), ExtResource( 19 ), ExtResource( 22 ), ExtResource( 28 ), ExtResource( 37 ), ExtResource( 25 ), ExtResource( 20 ), ExtResource( 31 ) ],
+"loop": true,
+"name": "idle",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 36 ) ],
+"loop": true,
+"name": "jump",
+"speed": 0.0
+}, {
+"frames": [ ExtResource( 40 ) ],
+"loop": true,
+"name": "fall",
+"speed": 0.0
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 16 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 17 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 14 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 2 ), ExtResource( 13 ), ExtResource( 15 ), ExtResource( 41 ), ExtResource( 38 ), ExtResource( 27 ), ExtResource( 30 ), ExtResource( 21 ), ExtResource( 39 ) ],
+"loop": true,
+"name": "run",
+"speed": 60.0
+} ]
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 42 )
+shader_param/radius = 10.0
+shader_param/modulate = null
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 0.5 )
+shape = SubResource( 3 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.146484, 0.146484 )
+frames = SubResource( 2 )
+animation = "idle"
+
+[node name="Weapon" type="Sprite" parent="."]
+material = SubResource( 4 )
+position = Vector2( 0, 10 )
+scale = Vector2( 0.0792079, 0.0792079 )
+texture = ExtResource( 3 )
+script = ExtResource( 6 )
+
+[node name="Position2D" type="Position2D" parent="Weapon"]
+position = Vector2( 0, -89.7779 )
+scale = Vector2( 8.97779, 8.97779 )
+
+[node name="WeaponAudioPlayer" type="AudioStreamPlayer2D" parent="Weapon"]
+volume_db = -11.361

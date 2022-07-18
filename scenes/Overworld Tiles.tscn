@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/tiles/grass.png" type="Texture" id=1]
+[ext_resource path="res://assets/tiles/stone.png" type="Texture" id=2]
+[ext_resource path="res://assets/tiles/dirt.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 32 )
+
+[node name="Overworld Tiles" type="Node"]
+
+[node name="Grass" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Grass"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Grass/StaticBody2D"]
+visible = false
+position = Vector2( 32, 32 )
+shape = SubResource( 1 )
+
+[node name="Dirt" type="Sprite" parent="."]
+position = Vector2( 0, 64 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Dirt"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dirt/StaticBody2D"]
+visible = false
+position = Vector2( 32, 32 )
+shape = SubResource( 1 )
+
+[node name="Stone" type="Sprite" parent="."]
+position = Vector2( 0, 128 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Stone"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stone/StaticBody2D"]
+visible = false
+position = Vector2( 32, 32 )
+shape = SubResource( 1 )

@@ -1,0 +1,56 @@
+{
+    "defaultWeapon": "rifle",
+    "weapons": [
+       {
+          "id": 0,
+          "name":"Assault Rifle",
+          "weaponSpriteFilename": "rifle.png",
+          "bulletSpriteFilename": "rifle-bullet.png",
+          "damagePerShot": 10,
+          "fireRate": 0.15,
+          "bulletSpeed": 2250,
+          "reloadTime": 2.0,
+          "magazineCapacity": 20,
+          "maxAmmo": 40,
+          "recoilDistance": 10,
+          "shakeMagnitude": 0.5,
+          "shakeDuration": 0.15,
+          "splashRadius": 0,
+          "reducePlayerSpeed": 0.1 
+       },
+       {
+        "id": 1,
+        "name":"Revolver",
+        "weaponSpriteFilename": "revolver.png",
+        "bulletSpriteFilename": "revolver-bullet.png",
+        "damagePerShot": 20,
+        "fireRate": 0.3,
+        "bulletSpeed": 2500,
+        "reloadTime": 2.0,
+        "magazineCapacity": 20,
+        "maxAmmo": 40,
+        "recoilDistance": 5,
+        "shakeMagnitude": 0.75,
+        "shakeDuration": 0.15,
+        "splashRadius": 0,
+        "reducePlayerSpeed": 0.1 
+        },
+       {
+        "id": 2,
+        "name":"Rocket Launcher",
+        "weaponSpriteFilename": "rocket-launcher.png",
+        "bulletSpriteFilename": "rocket.png",
+        "damagePerShot": 50,
+        "fireRate": 1.0,
+        "bulletSpeed": 1500,
+        "reloadTime": 3.0,
+        "magazineCapacity": 3,
+        "maxAmmo": 10,
+        "recoilDistance": 20,
+        "shakeMagnitude": 4.0,
+        "shakeDuration": 0.5,
+        "splashRadius": 30,
+        "reducePlayerSpeed": 0.3
+        }
+    ]
+ }

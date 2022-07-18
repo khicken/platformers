@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/rifle-fire-1new.mp3-99da854797c39f236cd717c81595d65d.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/weapons/rifle-fire-1new.mp3"
+dest_files=[ "res://.import/rifle-fire-1new.mp3-99da854797c39f236cd717c81595d65d.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
