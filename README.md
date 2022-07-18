@@ -1,4 +1,5 @@
-# jakes-adventure
-A will-be 2D platformer fighting RPG with action, adventure, and stupidity via Java
+# Platformer Template
 
-THIS PROJECT IS NOW ARCHIVED! I'm going to start using a game engine to make a full fledged game. Check out the other repo for the new project.
+The main branch uses Processing in Java to create a rudimentary platformer template. The "Godot" branch is a basic platformer with, well, Godot. This project was originally going to be a game, but I decided to hop into the 3D world so it's just an archive now.
+
+If you'd like to suggest improvements or ask questions feel free to do so! Clone this repo and have fun, I don't mind.
