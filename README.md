@@ -1,4 +1,4 @@
-# This part is NOT a platformer.
-It's a "console game" without the "game" since it's unfinished. I hardly worked on this project and I don't intend on working on it anytime soon.
+# This branch is NOT a platformer.
+It's a "console game" without the "game" since it's unfinished. There's a run.bat file (sorry other OS users!) for Windows execution. If not, use terminal commands to compile the java files and run the main file instead.
 
-If you're interested on what this is, clone the repo and run the "run.bat" file (sorry MacOS users!), and the program will automatically compile and run the application.
+This works for a great beginner project.
